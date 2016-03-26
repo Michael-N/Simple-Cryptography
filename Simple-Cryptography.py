@@ -4,15 +4,18 @@ class cryptoMsg(object):
         self.msg = msg #the message to work with a-z + spaces
         self.cipher = cipher #cipher type ex. Caesar
         self.name = name
+        
     def numToChr(self, i):
         #converts numbers 0-25 to a letter a-z
+        i = int(i)
         return chr(i + 97)
     
     def chrToNum(self, i):
-        #converts letters a-z to a number 0-25
+        #converts Lowercase letters a-z to a number 0-25
+        i = i.lower()
         return ord(i)-97
     
-    def fixMsg(self):
+    '''def fixMsg(self):
         #Removes harmfull characters / Fixes the self.msg
         self.msg = str(self.msg).lower
         fixedMsg = ''
@@ -21,11 +24,11 @@ class cryptoMsg(object):
                 fixedMsg += i
             else:
                 pass
-        self.msg = fixedMsg
+        self.msg = fixedMsg'''
         
-    def msgValidate(self):
-        '''checks msg to see if it is a string,assumes lower case, accepts a-z . Spaces
-        will check to make sure that the code is compatable with the other functions and return false if otherwise'''
+    '''def msgValidate(self):
+        #checks msg to see if it is a string,assumes lower case, accepts a-z . Spaces
+        will check to make sure that the code is compatable with the other functions and return false if otherwise
         if (type(self.msg)== str):
             for i in self.msg:
                 if (97<= ord(i) <= 122)| ( ord(i) == 32) | (ord(i) == 46):
@@ -33,17 +36,20 @@ class cryptoMsg(object):
                 else:
                     return false, 'Error: ' + i + ' Character not supported'
         else:
-            return false,'Error: msg is not a string'
+            return false,'Error: msg is not a string' '''
         
     def frequencyAnalysis(self):
-        #returns the frequency of the self.msg a in a decimal percentage ex. 0.05 for 5%
+        #returns the frequency of self.msg a in a list decimal percentage ex. 0.05 for 5%
+        #List index 0 = the percentage for a etc...
         msgFreq = [0]*26
         total = 0
         for i in range(0,len(self.msg)):
+            #exclude . and spaces
             if (ord(self.msg[i]) == 32) |(ord(self.msg[i]) == 46):
                 pass
             else:
-                msgFreq[int(self.chrToNum(self.msg[i]))] += 1
+                index = self.chrToNum(self.msg[i])
+                msgFreq[index] += 1
         for t in range(0,len(msgFreq)):
             total += msgFreq[t]
         for y in range(0,len(msgFreq)):
@@ -51,7 +57,8 @@ class cryptoMsg(object):
         return msgFreq
     
     def varianceAnalysis(self):
-        #Takes the self.msg and returns the variance, IS DEPENDANT on self.frequencyAnalysis()
+        #returns the self.msg Variance as a float
+        #english variance a,b.......
         eng = [0.0867,0.01492,0.02782,0.04253,0.12702,0.02228,0.02015,0.06094,0.06966,0.00153,0.00772,0.04025,0.02406,0.06749,0.07507,0.01929,0.00095,0.05987,0.06327,0.09056,0.02758,0.00978,0.02361,0.00150,0.01974,0.00074]
         mssg = self.frequencyAnalysis() 
         total = 0
@@ -59,9 +66,9 @@ class cryptoMsg(object):
             total += abs(eng[i]-mssg[i])
         return total
     
-    def cryptoHelp(self):
-        return true
-    def searchMsg(self,target):
+    '''def cryptoHelp(self):
+        return true'''
+    '''def searchMsg(self,target):
         #returns the start,end index of the matched text 
         hits = []
         for i in range(0,len(self.msg)):
@@ -70,12 +77,10 @@ class cryptoMsg(object):
                 testText[i] += self.msg[i + u]
             if testText == target:
                 hits.append([i,(i+len(target))])
-        return hits
+        return hits'''
     
     def encrypt(self):
         if self.cipher == 'caesar':#----------------CAESAR
-            #self.fixMsg()
-            #self.fixKey()#!!!!!!!!!!!!!!! THIS IS NOT YET DEFINED WRITE IT 
             encryptedText = ""
             for i in range(0,len(self.msg)):
                 encryptedText += self.numToChr((self.chrToNum(self.msg[i]) + self.keys[0]) % 26)
@@ -89,7 +94,7 @@ class cryptoMsg(object):
         else:
             return 'Error: encrypt() does not support' + self.cipher
     def decryptd(self):
-        #has Key Decryption Code
+        #Has Decryption Key
         decryptedText = ""
         for i in range(0,len(self.msg)):
             decryptedText += self.numToChr((self.chrToNum(self.msg[i]) - self.keys[0]) % 26)
@@ -97,20 +102,24 @@ class cryptoMsg(object):
     def decrypt(self):   
         if self.cipher == 'caesar':#----------------CAESAR
             if self.keys == []:
-                #NO KEY DECRYPTION CODE
-                lowestVariance = 10000000
-                nkey = 0
+                #Not Have Decryption Key
+                lowestVariance = 100000000000
+                guessKey = 0
                 msgStore = self.msg
+                #set the starting key to zero
                 self.keys.append(0)
                 for i in range(0,26):
                     self.keys[0] = i
                     test = self.decryptd()
+                    #so self.variance can be called on the 'test' decryption
                     self.msg = test
                     h = self.varianceAnalysis()
                     if h < float(lowestVariance):
+                        #guess key is set to the key that yeilds the lowest variance
                         lowestVariance = h
-                        nkey = i
-                self.key = nkey
+                        guessKey = i
+                # set the class vars for decryption by self.decryptd()
+                self.keys[0] = guessKey
                 self.msg = msgStore
                 return self.decryptd()
             else:
