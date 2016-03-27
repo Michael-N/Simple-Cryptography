@@ -225,45 +225,186 @@ class cryptoTask(object):
 #USER INTERFACE STUFF
 
 #STORED CRYPTO TASKS
-storedTasks = []
+storedTasks = [0]
 totalTasks = 0
 #INITALIZED VARS
 import os as os
 #INTERFACE
-def cryptoStart():
+def start():
     
     def clear():
         #for Windows
         os.system('cls')
         
-    def pickTask():
+    def pickTask():# PREVIOUS TASKS OR SELECTING A TASK
+        global storedTasks
+        global totalTasks
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print("PICK A TASK")
         print(" Type the index number of the task you wish to select or exit to exit")
+        #print(" (be sure to type it withine quotations '')")
         if totalTasks == 0:
-            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
             print(" There are no saved tasks please type exit and go make one")
-            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            return 'exit'
         else:
-            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
             print("Index | Task Name | Message Preview")
             print("-----------------------------------")
             for i in range(1,len(storedTasks)):
-                #THIS makes sure that the table of results turns out well formated
+                #THIS makes sure that the table of results turns out well formated????????????????
                 if len(str(i))> 6:
                     index = " MAX  "
                 else:
-                    index = str(i) + ( " " * (5-len(i)))
-                if len(str(storedTasks[i-1].taskName)) > 12:
-                    name = str(storedTasks[i-1].taskName[0,12])
+                    index = str(i) + ( " " * (5-len(str(i))))
+                if len(storedTasks[i].taskName) > 12: #ERROR??????? TypeError: string indices must be integers
+                    name = str(storedTasks[i].taskName[0,12])
                 else:
-                    name = str(storedTasks[i-1].taskName
-                    name = name + ( " " * (11-len(name)))
-                if 
-                print( index + "|" + name + "|" + #msg preview)
+                    name = str(storedTasks[i].taskName)
+                    name +=  " " * (11-len(name))
+                if len(storedTasks[i].msg) > 15:
+                      msgPreview = storedTasks[i].msg[0,16]
+                else:
+                    msgPreview = storedTasks[i].msg
+                print( index + "|" + name + "|" + msgPreview)
+            print("No more Messages")
+            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            userAnswer = input("Index: ")
+            if str(userAnswer).lower() == 'exit':
+                print("Exiting...")
+                return ['exit']
+            else:
+                print("Task " + str(userAnswer) + " selected" )    
+                return [storedTasks[int(userAnswer)], int(userAnswer)]
                 
-    def showTask():
+    def showTask(task): 
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print("DISPLAYED TASK")
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print( str(task.taskName))
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print("Task Message: " + str(task.msg))
+        print("Task Key: " + str(task.keys[0]))
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print("Task Message Frequency Analysis: ")
+        msgFreq = ''
+        for index in range(0,26):
+            msgFreq += task.numToChar(index) +  " " + str(task.msgFrequency()[index]) + ", "   
+        print(msgFreq)
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print("Task Message Variance: " + str(task.msgVariance()))
+
+    def showEncrypted(task):
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print("Encrypted the Message as: " + str(task.msgEncrypt()))
+        start()
+        
+    def showDecrypted(task):
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print("Decrypted the Message as: " + str(task.msgDecrypt()))
+        start()
+        
     def createTask():
-    def editTask():
+        global storedTasks
+        global totalTasks
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print("CREATE A NEW TASK")
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print("follow the onscreen instructions then hit enter to proceed")
+        #print(" (be sure to type your response withine quotations '')")
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        name = str(input("Type the name for the new task: "))
+        ciphType = str(input("Type the cipher type to be used (ex. caesar): "))
+        message = str(input("Type your message: "))
+        selectedKey = [0]                                                       #ERRORS HERE? line 326, in createTask ValueError: invalid literal for int() with base 10: ''
+    selectedKey = [int(validatedKey[0])]
+ValueError: invalid literal for int() with base 10: ''
+        selectedKey[0] = input("Type the key(Type nk for no key decryption): ")
+        validatedKey = selectedKey
+        if selectedKey[0] == 'nk':
+            selectedKey = []
+        else:
+            selectedKey = [int(validatedKey[0])]
+        storedTasks.append(cryptoTask(selectedKey,message,ciphType,name))
+        totalTasks += 1
+        print("Task Sucessfully Created")
+        start()
+        return storedTasks[totalTasks]
+        
+    def editTask(task,index):
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print("Edit TASK")
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print("Follow the onscreen instructions then hit enter to proceed")
+        #print(" (be sure to type your response withine quotations '' ")
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print("If you wish the task setting to remain unchanged, leave blank")
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print("Current task name: " + str(task.taskName))
+        name = str(input("Rename the task as: "))
+        print("Current Cipher Type: " + str(task.cipherType))
+        ciphType = str(input("Redefine the cipher type (ex. caesar): "))
+        print("Current Message: " + str(task.msg))
+        message = str(input("Redefine your message: "))
+        selectedKey = [0]
+        print("Current Key: " + str(task.keys[0]))
+        selectedKey[0] = input("Redefine the key(Type nk for no key decryption): ")
+        validatedKey = [0]
+        validatedKey[0] = selectedKey[0]
+        if selectedKey == []:
+            selectedKey = task.keys
+        elif selectedKey[0] == 'nk':
+            selectedKey = []
+        else:
+            selectedKey[0] = validatedKey[0]
+        if ciphType == '':
+            ciphType = task.cipherType
+        if message == '':
+            message = task.msg
+        storedTasks[index] = cryptoTask(selectedKey,message,ciphType,name)
+        print("Task Sucessfully Edited")
+        start()
+        
     def initial():
-    
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print("~                        Cryptography Interface                         ~")
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        choiceAlpha = str(input("Type p to view/edit previous tasks or n to create a new one: ")).lower()
+        if choiceAlpha == 'p':
+            task = pickTask()
+            if task[0] == 'exit':
+                return
+            else:
+                print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                choiceBeta = str(input("Type v to view the task or e to edit the task: ")).lower()
+                if choiceBeta == 'v':
+                    n = showTask(task[0])
+                    if n== 'exit':
+                        return
+                    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                    choiceGamma = str(input("Type e to encrypt or d to decrypt the task message: "))
+                    if choiceGamma == 'e':
+                        showEncrypted(task[0])
+                    elif choiceGamma  == 'd':
+                        showDecrypted(task[0])
+                    else:
+                        print("Invalid choice: " + choiceGamma + " , is not d or e")
+                        print("Cryptography Interface will now exit, type start() to open the interface") 
+                    return
+                elif choiceBeta == 'e':
+                    editTask(task[0],task[1])
+                    return
+                else:
+                    print("Invalid choice: " + choiceBeta + " , is not v or e")
+                    print("Cryptography Interface will now exit, type start() to open the interface")
+                    return
+        elif choiceAlpha == 'n':
+            createTask()
+            return 
+        else:
+            print("Invalid choice: " + choiceAlpha + " , is not p or n")
+            print("Cryptography Interface will now exit, type start() to open the interface")
+            return
+    initial()
 
