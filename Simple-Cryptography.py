@@ -240,24 +240,26 @@ def start():
         openTask(t,cryptoMsgs[totalMsgs])
         print(" type start() to begin")
         '''
-class cryptoTask(object):
-    #initalize class vars
+class SimpleCryptographyTask(object):
+
     def __init__(self,keys,msg,cipherType,taskName):
-        # keys is a list
-        self.keys = keys
+        #initalize class vars
+        self.keys = keys #keys is a list
         self.msg = msg
         self.cipherType = cipherType
         self.taskName = taskName
-    # convert 0-25 to coresponding lowercase Ascii 
-    def numToChar(num):
+           
+    def numToChar(self,num):
+        # convert 0-25 to coresponding lowercase Ascii
         if type(num) == int:
             char = chr(num + 97)
             return chr
         else:
             print("Error: " + str(num) + " is not a valid input")
             return false
-    # convert lowercase letter to ascii then convert to 0-25
-    def charToNum(char):
+         
+    def charToNum(self,char):
+        # convert lowercase letter to ascii then convert to 0-25
         if type(char) == str:
             char = char.lower()
             num = ord(char)-97
@@ -265,17 +267,28 @@ class cryptoTask(object):
         else:
             print( "Error: " + str(char) + " is not a valid input")
             return false
+        
     def msgFrequency(self):
         # checks letter frequency of the msg
         frequency = [0]*26
         numLettersInMsg = len(self.msg)
         for letter in self.msg:
-            frequency[charToNum(letter)] += 1
+            frequency[self.charToNum(letter)] += 1
         for dataPointIndex in range(0,len(frequency)):
             frequency[dataPointIndex] = float(frequency[dataPointIndex] / numLettersInMsg)
         return frequency
     
     def msgVariance(self):
+        # gets the variance of msg 
+        variance = 0
+        varianceList = [0]*26
+        msgFrequency = self.msgFrequency()
+        englishFrequency = [0.0867,0.01492,0.02782,0.04253,0.12702,0.02228,0.02015,0.06094,0.06966,0.00153,0.00772,0.04025,0.02406,0.06749,0.07507,0.01929,0.00095,0.05987,0.06327,0.09056,0.02758,0.00978,0.02361,0.00150,0.01974,0.00074]
+        for indexAlpha in range(0,26):
+            varianceList[indexAlpha] = abs(msgFrequency[indexAlpha]-englishFrequency[indexAlpha])
+        for indexBeta in range(0,len(varianceList)):
+            variance += varianceList[indexBeta]
+        return variance
     def encrypt(self):
         self.cipherType = str(self.cipherType.lower())
 
@@ -285,14 +298,10 @@ class cryptoTask(object):
             encryptedText = ''
             for letter in self.msg:
                 if 97 <= ord(letter) <= 122:
-                    encryptedText += numToChar(charToNum(letter) + self.keys[0])
+                    encryptedText += self.numToChar(self.charToNum(letter) + self.keys[0])
                 else:
                     pass
             return encryptedText
-        
-        elif self.cipherType == 'afine':
-        elif self.cipherType == 'rsa':
-        elif self.cipherType == 'viginere':
         else:
             print("Error: " + self.cipherType + " is not a valid input")
             return false
@@ -301,11 +310,11 @@ class cryptoTask(object):
         self.cipherType = str(self.cipherType.lower())
         
         if self.cipherType == 'caesar':
-            if self.keys = []:
+            if self.keys == []:
                 #NO KEY DECRYPTION
                 storeMsg = self.msg
                 lowestVariance = 100000000000000000000
-                corespondingKey = 
+                corespondingKey = 0
                 for i in range(0,26):
                     self.keys[0] = i
                     self.msg = storeMsg
@@ -325,18 +334,14 @@ class cryptoTask(object):
                 decryptedTextBeta = ''
                 for letter in self.msg:
                     if 97 <= ord(letter) <= 122:
-                        decryptedTextBeta += numToChar(charToNum(letter) - self.keys[0])
+                        decryptedTextBeta += self.numToChar(self.charToNum(letter) - self.keys[0])
                     else:
                         pass
                 return decryptedTextBeta
-            
-        elif self.cipherType == 'afine':
-        elif self.cipherType == 'rsa':
-        elif self.cipherType == 'viginere':
         else:
             print("Error: " + self.cipherType + " is not a valid input")
             return false
-        
-        
-        
-        
+
+#USER INTERFACE
+#def start(self):
+
