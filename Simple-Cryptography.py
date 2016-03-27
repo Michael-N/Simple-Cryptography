@@ -1,4 +1,4 @@
-class cryptoMsg(object):
+'''class cryptoMsg(object):
     def __init__(self, keys, msg, cipher, name):
         self.keys = keys #keys[0] is addKey or keyword, eys[1] mult
         self.msg = msg #the message to work with a-z + spaces
@@ -24,8 +24,8 @@ class cryptoMsg(object):
         self.msg = fixedMsg
         
     def msgValidate(self):
-        '''checks msg to see if it is a string,assumes lower case, accepts a-z . Spaces
-        will check to make sure that the code is compatable with the other functions and return false if otherwise'''
+        checks msg to see if it is a string,assumes lower case, accepts a-z . Spaces
+        will check to make sure that the code is compatable with the other functions and return false if otherwise
         if (type(self.msg)== str):
             for i in self.msg:
                 if (97<= ord(i) <= 122)| ( ord(i) == 32) | (ord(i) == 46):
@@ -128,7 +128,7 @@ class cryptoMsg(object):
     
     # END OF CLASS cryptoMsg
      
-    ''' 
+     
     def keysValidate(self): #NEEDS WORK !!!!!!!!!!!!
         if (type(self.keys) == list):
             if len(self.keys[1]) > 1:
@@ -136,7 +136,7 @@ class cryptoMsg(object):
             elif 
         else:
             return false, 'Error: keys is not a list'
-    '''   
+       
 cryptoMsgs = [0] # this is where we store the previous inialized objects used to decrypt/encrypt etc......
 totalMsgs = 0
 currentTask = "No current task"
@@ -197,7 +197,6 @@ def start():
         
         
     
-    '''
            This is where the user interface should go here based upon the totalMsg we will creat a new instance of the
            class cryptoMsg and save it in cryptoMsgs[totalMsgs] then add one to totalMsg. the user interface will ask the user a series of questions
            0.) Greet user and ask if they would like create a new message or view a previous one 1.) cipher type 2.) encrypt or decrypt 3.) the message
@@ -205,7 +204,7 @@ def start():
            give the user the ability to view the previous messages then pick one --> should display listindex[selection].name as what is presented
            should also provide a space for the tools defined in the program. as well as when displaying frequency graph  it /// /// //////// etc........
            make sure that the user can type. inputs should watch for key int errors or key is a char error!!!!!!!!!!! 
-    '''
+    
    # incase the person forgets quotations
     p = 'p'
     n = 'n'
@@ -240,6 +239,104 @@ def start():
         t.lower()
         openTask(t,cryptoMsgs[totalMsgs])
         print(" type start() to begin")
+        '''
+class cryptoTask(object):
+    #initalize class vars
+    def __init__(self,keys,msg,cipherType,taskName):
+        # keys is a list
+        self.keys = keys
+        self.msg = msg
+        self.cipherType = cipherType
+        self.taskName = taskName
+    # convert 0-25 to coresponding lowercase Ascii 
+    def numToChar(num):
+        if type(num) == int:
+            char = chr(num + 97)
+            return chr
+        else:
+            print("Error: " + str(num) + " is not a valid input")
+            return false
+    # convert lowercase letter to ascii then convert to 0-25
+    def charToNum(char):
+        if type(char) == str:
+            char = char.lower()
+            num = ord(char)-97
+            return num
+        else:
+            print( "Error: " + str(char) + " is not a valid input")
+            return false
+    def msgFrequency(self):
+        # checks letter frequency of the msg
+        frequency = [0]*26
+        numLettersInMsg = len(self.msg)
+        for letter in self.msg:
+            frequency[charToNum(letter)] += 1
+        for dataPointIndex in range(0,len(frequency)):
+            frequency[dataPointIndex] = float(frequency[dataPointIndex] / numLettersInMsg)
+        return frequency
+    
+    def msgVariance(self):
+    def encrypt(self):
+        self.cipherType = str(self.cipherType.lower())
+
+        #add code to validate the keys
+        if self.cipherType == 'caesar':
+            self.keys[0] = int(self.keys[0])
+            encryptedText = ''
+            for letter in self.msg:
+                if 97 <= ord(letter) <= 122:
+                    encryptedText += numToChar(charToNum(letter) + self.keys[0])
+                else:
+                    pass
+            return encryptedText
+        
+        elif self.cipherType == 'afine':
+        elif self.cipherType == 'rsa':
+        elif self.cipherType == 'viginere':
+        else:
+            print("Error: " + self.cipherType + " is not a valid input")
+            return false
+        
+    def decrypt(self):
+        self.cipherType = str(self.cipherType.lower())
+        
+        if self.cipherType == 'caesar':
+            if self.keys = []:
+                #NO KEY DECRYPTION
+                storeMsg = self.msg
+                lowestVariance = 100000000000000000000
+                corespondingKey = 
+                for i in range(0,26):
+                    self.keys[0] = i
+                    self.msg = storeMsg
+                    decryptedTextAlpha = self.decrypt()
+                    self.msg = decryptedTextAlpha
+                    if self.msgVariance() <= lowestVariance:
+                        lowestVariance = self.msgVariance()
+                        corespondingKey = self.keys[0]
+                    else:
+                        pass
+                self.msg = storeMsg
+                self.key = corespondingKey
+                self.decrypt()
+                    
+            else:
+                #KEY DECRYPTION
+                decryptedTextBeta = ''
+                for letter in self.msg:
+                    if 97 <= ord(letter) <= 122:
+                        decryptedTextBeta += numToChar(charToNum(letter) - self.keys[0])
+                    else:
+                        pass
+                return decryptedTextBeta
+            
+        elif self.cipherType == 'afine':
+        elif self.cipherType == 'rsa':
+        elif self.cipherType == 'viginere':
+        else:
+            print("Error: " + self.cipherType + " is not a valid input")
+            return false
+        
         
         
         
