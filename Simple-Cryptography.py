@@ -1,130 +1,4 @@
-'''class cryptoMsg(object):
-    def __init__(self, keys, msg, cipher, name):
-        self.keys = keys #keys[0] is addKey or keyword, eys[1] mult
-        self.msg = msg #the message to work with a-z + spaces
-        self.cipher = cipher #cipher type ex. Caesar
-        self.name = name
-    def numToChr(self, i):
-        #converts numbers 0-25 to a letter a-z
-        return chr(i + 97)
-    
-    def chrToNum(self, i):
-        #converts letters a-z to a number 0-25
-        return ord(i)-97
-    
-    def fixMsg(self):
-        #Removes harmfull characters / Fixes the self.msg
-        self.msg = str(self.msg).lower
-        fixedMsg = ''
-        for i in self.msg:
-            if (97<= ord(i) <= 122):
-                fixedMsg += i
-            else:
-                pass
-        self.msg = fixedMsg
-        
-    def msgValidate(self):
-        checks msg to see if it is a string,assumes lower case, accepts a-z . Spaces
-        will check to make sure that the code is compatable with the other functions and return false if otherwise
-        if (type(self.msg)== str):
-            for i in self.msg:
-                if (97<= ord(i) <= 122)| ( ord(i) == 32) | (ord(i) == 46):
-                    return true
-                else:
-                    return false, 'Error: ' + i + ' Character not supported'
-        else:
-            return false,'Error: msg is not a string'
-        
-    def frequencyAnalysis(self):
-        #returns the frequency of the self.msg a in a decimal percentage ex. 0.05 for 5%
-        msgFreq = [0]*26
-        total = 0
-        for i in range(0,len(self.msg)):
-            if (ord(self.msg[i]) == 32) |(ord(self.msg[i]) == 46):
-                pass
-            else:
-                msgFreq[int(self.chrToNum(self.msg[i]))] += 1
-        for t in range(0,len(msgFreq)):
-            total += msgFreq[t]
-        for y in range(0,len(msgFreq)):
-            msgFreq[y] = float(msgFreq[y]/total)
-        return msgFreq
-    
-    def varianceAnalysis(self):
-        #Takes the self.msg and returns the variance, IS DEPENDANT on self.frequencyAnalysis()
-        eng = [0.0867,0.01492,0.02782,0.04253,0.12702,0.02228,0.02015,0.06094,0.06966,0.00153,0.00772,0.04025,0.02406,0.06749,0.07507,0.01929,0.00095,0.05987,0.06327,0.09056,0.02758,0.00978,0.02361,0.00150,0.01974,0.00074]
-        mssg = self.frequencyAnalysis() 
-        total = 0
-        for i in range(0,len(mssg)):
-            total += abs(eng[i]-mssg[i])
-        return total
-    
-    def cryptoHelp(self):
-        return true
-    def searchMsg(self,target):
-        #returns the start,end index of the matched text 
-        hits = []
-        for i in range(0,len(self.msg)):
-            testText = ''
-            for u in range(0,len(target)):
-                testText[i] += self.msg[i + u]
-            if testText == target:
-                hits.append([i,(i+len(target))])
-        return hits
-    
-    def encrypt(self):
-        if self.cipher == 'caesar':#----------------CAESAR
-            #self.fixMsg()
-            #self.fixKey()#!!!!!!!!!!!!!!! THIS IS NOT YET DEFINED WRITE IT 
-            encryptedText = ""
-            for i in range(0,len(self.msg)):
-                encryptedText += self.numToChr((self.chrToNum(self.msg[i]) + self.keys[0]) % 26)
-            return encryptedText
-        elif self.cipher == 'afine':#----------------AFINE
-            return true
-        elif self.cipher == 'viginere':#----------------VIGINERE
-            return true
-        elif self.cipher == 'rsa':#----------------RSA
-            return true
-        else:
-            return 'Error: encrypt() does not support' + self.cipher
-    def decryptd(self):
-        #has Key Decryption Code
-        decryptedText = ""
-        for i in range(0,len(self.msg)):
-            decryptedText += self.numToChr((self.chrToNum(self.msg[i]) - self.keys[0]) % 26)
-        return decryptedText       
-    def decrypt(self):   
-        if self.cipher == 'caesar':#----------------CAESAR
-            if self.keys == []:
-                #NO KEY DECRYPTION CODE
-                lowestVariance = 10000000
-                nkey = 0
-                msgStore = self.msg
-                self.keys.append(0)
-                for i in range(0,26):
-                    self.keys[0] = i
-                    test = self.decryptd()
-                    self.msg = test
-                    h = self.varianceAnalysis()
-                    if h < float(lowestVariance):
-                        lowestVariance = h
-                        nkey = i
-                self.key = nkey
-                self.msg = msgStore
-                return self.decryptd()
-            else:
-                #DO has key decryption code
-                return self.decryptd()
-            
-        elif self.cipher == 'afine':#----------------AFINE
-            return true
-        elif self.cipher == 'viginere':#----------------VIGINERE
-            return true
-        elif self.cipher == 'rsa':#----------------RSA
-            return true 
-        else:
-            return 'Error: decrypt() does not support ' + self.cipher
+'''
     
     # END OF CLASS cryptoMsg
      
@@ -240,7 +114,7 @@ def start():
         openTask(t,cryptoMsgs[totalMsgs])
         print(" type start() to begin")
         '''
-class SimpleCryptographyTask(object):
+class cryptoTask(object):
 
     def __init__(self,keys,msg,cipherType,taskName):
         #initalize class vars
@@ -253,7 +127,8 @@ class SimpleCryptographyTask(object):
         # convert 0-25 to coresponding lowercase Ascii
         if type(num) == int:
             char = chr(num + 97)
-            return chr
+            char = str(char)
+            return char
         else:
             print("Error: " + str(num) + " is not a valid input")
             return false
@@ -273,23 +148,24 @@ class SimpleCryptographyTask(object):
         frequency = [0]*26
         numLettersInMsg = len(self.msg)
         for letter in self.msg:
-            frequency[self.charToNum(letter)] += 1
+            if 97 <= ord(letter) <= 122:
+                frequency[self.charToNum(letter)] += 1
+            else:
+                pass
         for dataPointIndex in range(0,len(frequency)):
             frequency[dataPointIndex] = float(frequency[dataPointIndex] / numLettersInMsg)
         return frequency
+            
     
     def msgVariance(self):
         # gets the variance of msg 
         variance = 0
-        varianceList = [0]*26
         msgFrequency = self.msgFrequency()
         englishFrequency = [0.0867,0.01492,0.02782,0.04253,0.12702,0.02228,0.02015,0.06094,0.06966,0.00153,0.00772,0.04025,0.02406,0.06749,0.07507,0.01929,0.00095,0.05987,0.06327,0.09056,0.02758,0.00978,0.02361,0.00150,0.01974,0.00074]
         for indexAlpha in range(0,26):
-            varianceList[indexAlpha] = abs(msgFrequency[indexAlpha]-englishFrequency[indexAlpha])
-        for indexBeta in range(0,len(varianceList)):
-            variance += varianceList[indexBeta]
+            variance += abs(msgFrequency[indexAlpha]-englishFrequency[indexAlpha])
         return variance
-    def encrypt(self):
+    def msgEncrypt(self):
         self.cipherType = str(self.cipherType.lower())
 
         #add code to validate the keys
@@ -297,8 +173,9 @@ class SimpleCryptographyTask(object):
             self.keys[0] = int(self.keys[0])
             encryptedText = ''
             for letter in self.msg:
+                letter = letter.lower()
                 if 97 <= ord(letter) <= 122:
-                    encryptedText += self.numToChar(self.charToNum(letter) + self.keys[0])
+                    encryptedText += self.numToChar((self.charToNum(letter) + self.keys[0])%26)
                 else:
                     pass
             return encryptedText
@@ -306,7 +183,7 @@ class SimpleCryptographyTask(object):
             print("Error: " + self.cipherType + " is not a valid input")
             return false
         
-    def decrypt(self):
+    def msgDecrypt(self):
         self.cipherType = str(self.cipherType.lower())
         
         if self.cipherType == 'caesar':
@@ -315,26 +192,29 @@ class SimpleCryptographyTask(object):
                 storeMsg = self.msg
                 lowestVariance = 100000000000000000000
                 corespondingKey = 0
+                self.keys.append(0)
                 for i in range(0,26):
                     self.keys[0] = i
                     self.msg = storeMsg
-                    decryptedTextAlpha = self.decrypt()
+                    decryptedTextAlpha = self.msgDecrypt()
                     self.msg = decryptedTextAlpha
                     if self.msgVariance() <= lowestVariance:
                         lowestVariance = self.msgVariance()
                         corespondingKey = self.keys[0]
+                        continue
                     else:
                         pass
                 self.msg = storeMsg
-                self.key = corespondingKey
-                self.decrypt()
+                self.keys[0] = corespondingKey
+                return self.msgDecrypt()
                     
             else:
                 #KEY DECRYPTION
                 decryptedTextBeta = ''
                 for letter in self.msg:
+                    letter = letter.lower()
                     if 97 <= ord(letter) <= 122:
-                        decryptedTextBeta += self.numToChar(self.charToNum(letter) - self.keys[0])
+                        decryptedTextBeta += self.numToChar(abs((self.charToNum(letter) - self.keys[0]) % 26))
                     else:
                         pass
                 return decryptedTextBeta
@@ -342,6 +222,48 @@ class SimpleCryptographyTask(object):
             print("Error: " + self.cipherType + " is not a valid input")
             return false
 
-#USER INTERFACE
-#def start(self):
+#USER INTERFACE STUFF
+
+#STORED CRYPTO TASKS
+storedTasks = []
+totalTasks = 0
+#INITALIZED VARS
+import os as os
+#INTERFACE
+def cryptoStart():
+    
+    def clear():
+        #for Windows
+        os.system('cls')
+        
+    def pickTask():
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print(" Type the index number of the task you wish to select or exit to exit")
+        if totalTasks == 0:
+            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            print(" There are no saved tasks please type exit and go make one")
+            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        else:
+            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            print("Index | Task Name | Message Preview")
+            print("-----------------------------------")
+            for i in range(1,len(storedTasks)):
+                #THIS makes sure that the table of results turns out well formated
+                if len(str(i))> 6:
+                    index = " MAX  "
+                else:
+                    index = str(i) + ( " " * (5-len(i)))
+                if len(str(storedTasks[i-1].taskName)) > 12:
+                    name = str(storedTasks[i-1].taskName[0,12])
+                else:
+                    name = str(storedTasks[i-1].taskName
+                    name = name + ( " " * (11-len(name)))
+                if 
+                print( index + "|" + name + "|" + #msg preview)
+                
+    def showTask():
+    def createTask():
+    def editTask():
+    def initial():
+    
 
