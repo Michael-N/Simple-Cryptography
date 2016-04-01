@@ -1,10 +1,10 @@
 class settings(object):
-    
+
     def __init__(self):
         self.__case  = 'lower' # or 'upper' or 'both'
         self.__removeChars = '' #remove these before doing anything
         self.__replaceRemoved = ''
-        
+
     def setCase(self,arg):
         if type(arg) == str:
             arg = arg.lower()
@@ -15,7 +15,7 @@ class settings(object):
                 return false
         else:
             return false
-    
+
     def setRemoveChars(self,arg):
         if type(arg) == (str | list):
             if type(arg) == str:
@@ -29,7 +29,7 @@ class settings(object):
             return false
 
     def charToNum(self,arg):
-        if type(arg) = chr:
+        if type(arg) == chr:
             for letter in self.__removeChars:
                 if arg == letter:
                     return false
@@ -48,7 +48,7 @@ class settings(object):
 
     def numToChar(self,arg):
         if type(arg) == int:
-            if self.__case == 'lower'
+            if self.__case == 'lower':
                 return chr(arg + 97)
             elif self.__case == 'upper':
                 return chr(arg + 65)
@@ -58,8 +58,8 @@ class caesar(settings):
     def __init__(self):
         self.__key = null
         self.__msg = ''
-        
-    def setKey(self,arg): 
+
+    def setKey(self,arg):
         if type(arg) == int:
             self.__key = arg
             return true
@@ -116,9 +116,3 @@ class caesar(settings):
             else:
                 encryptedMsg += item
         return encryptedMsg
-                
-            
-                
-        
-            
-                
