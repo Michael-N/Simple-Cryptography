@@ -201,7 +201,7 @@ def start():
         name = str(input("Type the name for the new task: "))
         ciphType = str(input("Type the cipher type to be used (ex. caesar): "))
         message = str(input("Type your message: "))
-        selectedKey = [0]                                                       #ERRORS HERE? line 326, in createTask ValueError: invalid literal for int() with base 10: ''
+        selectedKey = [0]
         selectedKey = [validatedKey[0]]
         selectedKey[0] = input("Type the key(Type nk for no key decryption): ")
         validatedKey = selectedKey
