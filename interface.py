@@ -1,7 +1,8 @@
 class settings(object):
     #MAKE SURE THIS INITALIZES ITSELFE AS  AS IT IS ACCESSED LATER ON in editSettings
+errors = []
 class error(exception):
-    errors = []
+
     #BUILD AN ERROR HANDELING SYSTEM
 allTasks = []
 currentTask = None
@@ -21,9 +22,21 @@ class choice(object):
 
 def showActiveChoices():
     #PRINT OUT THE CHOICES WITH THEIR INDEX
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("Please type the number of the choice you wish to select")
+    for indexAlpha in range(0,len(activeChoices)):
+        print( str(indexAlpha) + " " + str(activeChoices[indexAlpha].name) + " " + str(activeChoices[indexAlpha].quickDes))
+    print('No more choices')
+
 def askChoice():
     #THIS FUNCTION SHOULD LOOK AT THE CHOICES AND BASED UPON
     #THEIR INDEX ASK THE USER TO PICK ONE AND RUN THE CALLBACK
+    answer = int(input("Choice number: "))
+    if ((answer < 0 ) | (answer > len(activeChoices))):
+        print('You did not type a valid number')
+        askChoice()
+    else:
+        activeChoices[answer].callback()
 def exit():
     #ASk the user if they want to exit to the main menue or exit the program
     #SHOULD EXIT AND GO TO THE MAIN MENU/ the start()
