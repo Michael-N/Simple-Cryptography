@@ -19,6 +19,30 @@ class choice(object):
     def addChoice(self):
         allChoices.append(self)
     addChoice(self)
+class task(object):
+    def __init__(self,cipherType,msg,keys,name):
+        self.cipherType = cipherType
+        self.msg = msg
+        self.keys = keys
+        self.name = name
+    def getDisplay(self):
+        #Name 6 char, ciphertype 12 char, msg 10 char
+        def cut(tmsg, endLength):
+            fmsg = ''
+            if len(tmsg) == endLength:
+                fmsg = tmsg
+            elif len(tmsg) < endLength:
+                fmsg += tmsg
+                spacesn = (endLength-len(tmsg)) * ' '
+                fmsg +=  spacesn
+            else:
+                fmsg += tmsg[0,endLength]
+            return str(fmsg)
+        cmsg = cut(self.msg, 10)
+        cname = cut(self.name, 6)
+        ccipherType = cut(self.cipherType, 12)
+        return ' | Name: ' + cname + ' | Cipher Type: ' + ccipherType + ' | Message Preview: ' + cmsg + ' |'
+
 
 def showActiveChoices():
     #PRINT OUT THE CHOICES WITH THEIR INDEX
@@ -47,8 +71,19 @@ def deleteTask():
     #ASKS THE USER WHAT TASK THEY WANT TO  DELETE Then does that
     #etc ask what t do next with showActiveChoices() and askChoice()
 def showAllTasks():
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print('All Tasks')
+    print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+    global allTasks
+    if allTasks = []:
+        print('There are no Tasks, go and make one')
+    else:
+        for taskn in range(0,len(allTasks)):
+            print(str(taskn)+ ' ' + allTasks[taskn].getDisplay())
+        print('No more Tasks')
     #LOOKS AT THE CURRENT TASKS LIST AND DISPLAYS THEM WATCHES FOR EMPTY LIST
     #then ask what t do next with showActiveChoices() and askChoice()
+    #CREATE A CHOICE THAT TAKES USER INPUT AND SETS GLOBAL TASK TO CURRENT TASK ONLY DO THIS UNLESS altasks != []
 def previewTask():
     #Should not encrypt/decrypt but show keys,msg,name,cipherName
     #etc ask what t do next with showActiveChoices() and askChoice()
@@ -71,17 +106,13 @@ def start():
     #THE main Menue that asks the user for initial input
 def setActiveChoices(arg):
     #TAKES a list of number indexes that correspond to allChoices and appends to and OVERIDES to these choices in the activeChoices
+    global activeChoices
+    activeChoices = []
+    for index in arg:
+        activeChoices.append(allChoices[index])
+
 def devMode():
     # TAKES DIRECT INPUT FROM USER NO VALIDATION!!!! FOR DEBUGGING
-def editSettings():
-    #EDIT THE SETTINGS object created by the class SETTINGS
-def inportCrypto(arg):
-    #IMPORTS THE FILE THAT IS TO BE USED FOR THE INTERFACE
-    import arg as global crypto
-def exportTasks():
-    #Allows the user to name and save a task/s to a FILE (.task.py)
-def inportTasks():
-    #Allows the user to load a task into the allTasks
 choice('Create Task', createTask,'Create a new Task', "This choice allows you to create a a new cryptography task that you can later access for your needs")
 choice('Edit Task', editTask, 'Edit a Task', 'This allows you to preview then edit previous tasks' )
 choice('Exit', exit, 'Exit', 'Exit to the main menu or exit the program')
