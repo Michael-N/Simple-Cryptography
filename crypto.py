@@ -1,21 +1,31 @@
 class caesar(object):
     def __init__(self):
         self.cipherType = 'caesar'
-	def chrToNum(char):
-		#converts to lower case
-		num = ord(char)
-		num -= 97
-		return num
-	def numToChr(num):
-		#accepts numbers in lowercase ascii form
-		char = ord(num + 97)
-		return char
+        return 
+        
+    def chrToNum(char):
+	#converts to lower case
+	num = ord(char)
+	num -= 97
+	return num
+	
+    def numToChr(num):
+	#accepts numbers in lowercase ascii form
+	char = ord(num + 97)
+	return char
+	
+    def az(letter):
+    	if 97 <= ord(letter) <= 122:
+    	   return True
+    	else:
+    	   return False
+    	   
     def encrypt(self,msg,key):
         #ENCRYPTION CODE
 		encrypted = ''
 		for letter in msg:
 			letter = letter.lower()
-			if 97 <= ord(letter) <= 122:
+			if az(letter):
 				encrypted += numToChr((chrToNum(letter) + key) % 26)
 			else:
 				continue
@@ -26,7 +36,7 @@ class caesar(object):
 		decrypted = ''
 		for letter in msg:
 			letter = letter.lower()
-			if 97 <= ord(letter) <= 122:
+			if az(letter):
 				decrypted += numToChr((chrToNum(letter) - key) % 26)
 			else:
 				continue
@@ -56,13 +66,23 @@ class caesar(object):
         #MSG VALIDATION CODE
     def noKeysDecrypt(self):
         #NO KEY DECRYPTION CODE
-class afineMsg(caesarMsg):
-    def __init__(self,keys,msg):
-        self.keys = []
+class afine(caesarMsg):
+    def __init__(self):
         self.cipherType = 'afine'
-        self.msg = msg
-    def encrypt(self):
+        return
+    def getValidMultkeys(num):
+    	# Should retrun all intigers relativly prime to num
+    def encrypt(self, msg,multKey,addKey):
         #ENCRYPTION CODE
+        encrypted = ''
+        for letter in msg:
+           letter = letter.lower()
+           if az(letter):
+              encrypted += self.numToChr(((self.chrToNum(letter) + addKey) * multKey) % 26)
+           else:
+              continue
+        return encrypted
+        
     def decrypt(self):
         #DECRYPTION CODE
     def frequencyAnalysis(self):
