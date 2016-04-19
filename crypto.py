@@ -72,6 +72,18 @@ class afine(caesarMsg):
         return
     def getValidMultkeys(num):
     	# Should retrun all intigers relativly prime to num
+    def isValidMultKey(key,num):
+    	#check if key is relativly prime to num return true or false
+    def getInvrsMultKey(key):
+    	# gets the inverse of the mult key , asumes 26 , watches for keys that do not have a reverse
+    def getInvrsAddKey(key,delta = 'pos'):
+    	#or delta = 'neg', assumes 26
+    	if delta == 'neg':
+    	   key = 0-key
+    	   return key
+    	else:
+    	   key = 25-key ######## THIS MAY CAUSE AN ERROR
+    	   
     def encrypt(self, msg,multKey,addKey):
         #ENCRYPTION CODE
         encrypted = ''
@@ -83,8 +95,16 @@ class afine(caesarMsg):
               continue
         return encrypted
         
-    def decrypt(self):
+    def decrypt(self,msg,multKey,addKey):
         #DECRYPTION CODE
+        decrypted = ''
+        for letter in msg:
+           letter = letter.lower()
+           if az(letter):
+              decrypted += self.numToChr(((self.chrToNum(letter) * self.getInvrsMultKey(multKey)) - getInvrsAddKey(addKey)) % 26)
+           else:
+              continue
+        return decrypted
     def frequencyAnalysis(self):
         #ANALYSIS CODE
     def msgVariation(self):
