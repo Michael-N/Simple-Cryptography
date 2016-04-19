@@ -115,13 +115,20 @@ class afine(caesarMsg):
         #MSG VALIDATION CODE
     def noKeysDecrypt(self):
         #NO KEY DECRYPTION CODE
-class viginereMsg(afineMsg):
-    def __init__(self,keys,msg):
-        self.keys = []
+class viginere(afineMsg):
+    def __init__(self):
         self.cipherType = 'viginere'
-        self.msg = msg
-    def encrypt(self):
+	return 
+	
+    def encrypt(self,msg, keyWord):
         #ENCRYPTION CODE
+        encrypted = ''
+        counter = 0
+        lenK = len(keyword) -1
+        for letter in msg:
+           letter = letter.lower()
+           if az(letter):
+           	encrypted += 
     def decrypt(self):
         #DECRYPTION CODE
     def frequencyAnalysis(self):
