@@ -85,6 +85,8 @@ class afine(caesar):
 	def phi(num):
 		num = num - 1
 		return num
+	def isRelPrime(n,a):
+		#checks if two numbers are relativly prime
 	def GFC(num,numA):
 		#Get the greatest common factor of the two numbers
 		return True
@@ -100,6 +102,7 @@ class afine(caesar):
 		return validKeys
 	def factor(n):
 		#should factor n and return a list of factors
+		
 		return True
 	def isValidMultKey(key,num):
 		#check if key is relativly prime to num return true or false
