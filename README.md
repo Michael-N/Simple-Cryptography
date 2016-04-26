@@ -19,9 +19,9 @@
 
 ##Class map
 * Usage: `map(iterable,err = -1)`
-	Takes an iterable and maps each item in the iterable to a number.You
-	can then access item or number by calling the instance of the class on the item or
-	number. It will return it's counterpart. If it fails to access, err will be returned
+Takes an iterable and maps each item in the iterable to a number.You
+can then access item or number by calling the instance of the class on the item or
+number. It will return it's counterpart. If it fails to access, err will be returned
 ```pyhton	
 myMap = map('abc0123)
 mymap('0') #>>> 3
@@ -29,8 +29,8 @@ myMap(3) #>>> '0'
 myMap('4') #>>> -1, the err is returned
 ```
 * Property: `err`
-	Is passed as an optional argument to the instance on initilization. Defaults to
-	the value of -1 . This will be returned if an error occures. 
+Is passed as an optional argument to the instance on initilization. Defaults to
+the value of -1 . This will be returned if an error occures. 
 ```python
 myMap = map('abc')
 myMap.err #>>> -1
@@ -38,7 +38,7 @@ myMapT = map('abc', err = 'My Error')
 myMapT.err #>>> 'My Error'
 ```
 * Method: `setMap(iterable)`
-	Allows the instance of the class to have it's character map redefined
+Allows the instance of the class to have it's character map redefined
 ```python
 myMap = map('abc')
 myMap.setMap('efg')
