@@ -38,7 +38,7 @@ class map(object):
 			else:
 				return self.err
 		else:
-			raise cryptoErr
+			raise self.err
 class caesar(object):
 	def __init__(self):
 		self.cipherType = 'caesar'
@@ -138,6 +138,7 @@ class caesar(object):
 class afine(caesar):
 	def __init__(self):
 		self.cipherType = 'afine'
+		self.defMap = map('abcdefghijklmnopqrstuvwxyz')
 		return
 	def phi(num):
 		num = num - 1
@@ -187,7 +188,7 @@ class afine(caesar):
 		for letter in msg:
 			letter = letter.lower()
 			if self.az(letter):
-				encrypted += self.numToChr(((self.chrToNum(letter) + addKey) * multKey) % 26)
+				encrypted += self.numToChr(((self.chrToNum(letter) + addKey) * multKey) % self.defMap.mod)
 			else:
 				continue
 		return encrypted
@@ -197,7 +198,7 @@ class afine(caesar):
 		for letter in msg:
 			letter = letter.lower()
 			if self.az(letter):
-				decrypted += self.numToChr(((self.chrToNum(letter) * self.getInvrsMultKey(multKey)) - getInvrsAddKey(addKey)) % 26)
+				decrypted += self.numToChr(((self.chrToNum(letter) * self.getInvrsMultKey(multKey)) - getInvrsAddKey(addKey)) % self.defMap.mod)
 			else:
 				continue
 		return decrypted
