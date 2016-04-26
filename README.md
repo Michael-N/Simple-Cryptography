@@ -20,9 +20,9 @@
 ##Class map
 * Usage: `map(iterable,err = -1)`
 
-takes an iterable and maps each item in the iterable to a number.You
-can then access item or number by calling the instance of the class on the item or
-number. It will return it's counterpart. If it fails to access, err will be returned
+	takes an iterable and maps each item in the iterable to a number.You
+	can then access item or number by calling the instance of the class on the item or
+	number. It will return it's counterpart. If it fails to access, err will be returned
 ```pyhton
 myMap = map('abc0123)
 mymap('0') #>>> 3
