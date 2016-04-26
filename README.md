@@ -18,13 +18,14 @@
 * [Class choice](#choice)
 
 ##Class map
-*Maps items in an iterable to their corresponding number index and index to item likewise
-
-###Usage
-When the object is initalized it accepts an iterable, and an optional err
-that is returned if the map can not find the coresponding integer or string
-
-'''Python
-my
-'''
+* Usage: 'map(iterable,err = -1)'
+takes an iterable and maps each item in the iterable to a number.You
+can then access item or number by calling the instance of the class on the item or
+number. It will return it's counterpart. If it fails to access, err will be returned
+```pyhton
+myMap = map('abc0123)
+mymap('0') #>>> 3
+myMap(3) #>>> '0'
+myMap('4') #>>> -1, the err is returned
+```
 
