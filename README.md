@@ -4,6 +4,11 @@
 * There will not be a version avilable for any version of Python lower than 3.5.1
 * More documentation on the code will come!
 
+##Overview
+###File Crypto.py
+* [Class map](#map)
+* 
+
 ### Tools
 * Frequency Analysis
 * English Variance Analysis 
