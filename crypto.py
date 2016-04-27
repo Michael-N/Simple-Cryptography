@@ -23,6 +23,7 @@ class map(object):
 		self.mapI = mapI
 		self.err = err
 		self.mod = len(mapI)
+		return
 	def __call__(self,chrNum):
 		#will convert any string to a chr and any chr to a num according to the map
 		if type(chrNum) == str:
@@ -39,6 +40,11 @@ class map(object):
 				return self.err
 		else:
 			raise self.err
+	def setMap(self,mapB):
+		self.mapI = mapB
+		self.mod = len(mapB)
+		self.mapLength = len(mapB)
+		return
 class caesar(object):
 	def __init__(self):
 		self.cipherType = 'caesar'
@@ -49,17 +55,21 @@ class caesar(object):
 			return False
 		elif t == False:
 			return True
-	def chrToNum(self, char):
+	def chrToNum(self, char,forceMap = False):
 		#converts a character to a number based upon the classes self.defMap
-		num = self.defMap(char)
+		if forceMap == False:
+			forceMap = self.defMap
+		num = forceMap(char)
 		return 	num
 	def setMap(self,mapN):
 		#takes a map as an argument
 		self.defMap = mapN
 		return 
-	def numToChr(self, num):
+	def numToChr(self, num,forceMap = False):
+		if forceMap == False:
+			forceMap = self.defMap
 		#converts a number to a character based upon the classes self.defMap
-		char  = self.defMap(num)
+		char  = forceMap(num)
 		return char
 	def az(self, letter):
 		#checks if a letter is a to z 
