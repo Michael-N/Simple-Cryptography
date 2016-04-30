@@ -22,20 +22,20 @@ class map(object):
 		self.mapLength = len(mapI)
 		self.mapI = mapI
 		self.err = err
-		self.mod = len(mapI)
+		self.mod = int(len(mapI))
 		return
 	def __call__(self,chrNum):
 		#will convert any string to a chr and any chr to a num according to the map
 		if type(chrNum) == str:
 			for index in range(0,self.mapLength):
 				if chrNum == self.mapI[index]:
-					return index
+					return int(index)
 				else:
 					continue
 			return self.err
 		elif type(chrNum) == int:
-			if self.mapLength <= chrNum <= self.mapLength:
-				return self.mapI[chrNum]
+			if 0 <= chrNum < self.mapLength:
+				return str(self.mapI[chrNum])
 			else:
 				return self.err
 		else:
@@ -49,6 +49,7 @@ class caesar(object):
 	def __init__(self):
 		self.cipherType = 'caesar'
 		self.defMap = map('abcdefghijklmnopqrstuvwxyz')
+		self.enVariance = [0.0867,0.01492,0.02782,0.04253,0.12702,0.02228,0.02015,0.06094,0.06966,0.00153,0.00772,0.04025,0.02406,0.06749,0.07507,0.01929,0.00095,0.05987,0.06327,0.09056,0.02758,0.00978,0.02361,0.00150,0.01974,0.00074]
 		return
 	def opp(t):
 		if t == True:
@@ -103,7 +104,7 @@ class caesar(object):
 			if de == self.defMap.err:
 				pass
 			else:
-				decrypted += self.numToChr((self.chrToNum(letter) - key) % self.defMap.mod)
+				decrypted += str(self.numToChr((self.chrToNum(letter) - key) % self.defMap.mod))
 		return decrypted
 	def frequencyAnalysis(self,msg):
 		#ANALYSIS CODE

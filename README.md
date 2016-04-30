@@ -27,6 +27,18 @@ mymap('0') #>>> 3
 myMap(3) #>>> '0'
 myMap('4') #>>> -1, the err is returned
 ```
+* For maps that use escaped keys  be sure that it is made with the proper escape key
+sequence according to Python 3.5.1 , see the example below
+```python
+#incorect
+myMap = map('\') 
+myMap('\') #>>> Returns the map's err value
+myMap(0) #>>> Returns the map's err value
+#correct
+myMap = map('\\') 
+myMap('\\') #>>> Returns 0
+myMap(0) #>>> Returns '\\' 
+```
 #####Property: `err`
 
 * Is passed as an optional argument to the instance on initilization. Defaults to
