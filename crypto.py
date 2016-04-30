@@ -94,7 +94,7 @@ class caesar(object):
 			if en == self.defMap.err:
 				pass
 			else:
-				encrypted += self.numToChr((self.chrToNum(letter) + key) % self.defMap.mod)
+				encrypted += str(self.numToChr((self.chrToNum(letter) + key) % self.defMap.mod))
 		return encrypted
 	def decrypt(self,msg,key):
 		#DECRYPTION CODE
@@ -146,21 +146,21 @@ class caesar(object):
 				testKey = key
 			key += 1 
 		return [self.decrypt(msg,testKey), testKey]
-class afine(caesar):
+class afine(caesar,object):
 	def __init__(self):
 		self.cipherType = 'afine'
 		self.defMap = map('abcdefghijklmnopqrstuvwxyz')
 		return
-	def phi(num):
+	def phi(self,num):
 		num = num - 1
 		return num
-	def isRelPrime(n,a):
+	def isRelPrime(self,n,a):
 		#checks if two numbers are relativly prime
 		return True
-	def GFC(num, numA):
+	def GCF(self,num, numA):
 		#Get the greatest common factor of the two numbers
 		return True
-	def getValidMultkeys(num):
+	def getValidMultkeys(self,num):
 		# Should retrun all intigers relativly prime to num
 		validKeys = []
 		for indexA in range(0,num):
@@ -170,65 +170,57 @@ class afine(caesar):
 				else:
 					continue
 		return validKeys
-	def factor(n):
+	def factor(self,n,facLst = []):
 		#should factor n and return a list of factors
 		
 		return True
-	def isValidMultKey(key,num):
+	def isValidMultKey(self,key,num):
 		#check if key is relativly prime to num return true or false
 		return True
-	def getInvrsMultKey(key):
+	def getInvrsMultKey(self,key):
 		# gets the inverse of the mult key , asumes 26 , watches for keys that do not have a reverse
 		inverseKey = None
-		for index in range(0,26):
-			if ((key * index) % 26) == 1:
+		for index in range(0,self.defMap.mod):
+			if ((key * index) % self.defMap.mod) == 1:
 				inverseKey = index
 			else:
 				continue
 		return inverseKey
-	def getInvrsAddKey(key,delta = 'pos'):
-		#or delta = 'neg', assumes 26
+	def getInvrsAddKey(self,key,delta = 'neg'):
+		#or delta = 'neg', assumes 26, only accepts positive keys
 		if delta == 'neg':
-			key = 0-key
-			return key
+			keyN = 0 - key
+			return keyN
 		else:
-			key = 25-key ######## THIS MAY CAUSE AN ERROR 
+			keyN = self.defMap.mod -key ######## THIS MAY CAUSE AN ERROR 
+			return keyN
 	def encrypt(self, msg,multKey,addKey):
 		#ENCRYPTION CODE
 		encrypted = ''
 		for letter in msg:
-			letter = letter.lower()
-			if self.az(letter):
-				encrypted += self.numToChr(((self.chrToNum(letter) + addKey) * multKey) % self.defMap.mod)
+			en =  self.defMap(letter)
+			if en == self.defMap.err:
+				pass
 			else:
-				continue
+				encrypted += str(self.numToChr(((self.chrToNum(letter) + addKey) * multKey) % self.defMap.mod))
 		return encrypted
 	def decrypt(self,msg,multKey,addKey):
 		#DECRYPTION CODE
 		decrypted = ''
 		for letter in msg:
-			letter = letter.lower()
-			if self.az(letter):
-				decrypted += self.numToChr(((self.chrToNum(letter) * self.getInvrsMultKey(multKey)) - getInvrsAddKey(addKey)) % self.defMap.mod)
+			de = self.defMap(letter)
+			if de == self.defMap.err:
+				pass
 			else:
-				continue
+				decrypted += str(self.numToChr(((self.chrToNum(letter) * self.getInvrsMultKey(multKey)) + self.getInvrsAddKey(addKey)) % self.defMap.mod))
 		return decrypted
-	def keysValidate(self,keys):
-		if type(keys) != str:
-			return False
-		elif True:
-			for letter in keys:
-				if self.opp(self.az(letter)):
-					return False
-		else:
-			return True
 	def noKeysDecrypt(self,msg):
 		#NO KEY DECRYPTION CODE
 		lowestVariance = 1000
 		testMultKey = None
 		testAddKey = None
-		for indexA in getValidMultkeys(26):
-			for indexB in range(0,26):
+		for indexA in getValidMultkeys(self.defMap.mod):
+			for indexB in range(0,self.defMap.mod):
 				testDecrypt = self.decrypt(msg, indexA,indexB)
 				testFrequency = frequencyAnalysis(testDecrypt)
 				testVariance = variance(testFrequency)
@@ -240,43 +232,38 @@ class afine(caesar):
 class viginere(afine):
 	def __init__(self):
 		self.cipherType = 'viginere'
-		return 
+		self.defMap = map('abcdefghijklmnopqrstuvwxyz')
+		return
 	def encrypt(self,msg, keyWord):
 		#ENCRYPTION CODE
 		encrypted = ''
 		counter = 0
-		lenK = len(keyword) -1
+		lenK = len(keyWord)
 		for letter in msg:
-			letter = letter.lower()
-			if self.az(letter):
-				encrypted += self.numToChr((self.chrToNum(letter) + self.chrToNum(keyWord[counter])) % 26)
+			en = self.defMap(letter)
+			if en == self.defMap.err:
+				pass
+			else:
+				encrypted += str(self.numToChr((self.chrToNum(letter) + self.chrToNum(keyWord[counter])) % self.defMap.mod))
 				counter += 1
 				if counter == lenK:
 					counter = 0
-			else:
-				continue
 		return encrypted
 	def decrypt(self, msg, keyWord):
 		#DECRYPTION CODE
 		decrypted = ''
 		counter = 0
-		lenK = len(keyword) -1
+		lenK = len(keyWord)
 		for letter in msg:
-			letter = letter.lower()
-			if self.az(letter):
+			de = self.defMap(letter)
+			if de == self.defMap.err:
+				pass
+			else:
 				decrypted += self.numToChr((self.chrToNum(letter) - self.chrToNum(keyWord[counter])) % 26)
 				counter += 1
 				if counter == lenK:
 					counter = 0
-			else:
-				continue
 		return decrypted
-	def frequencyAnalysis(self):
-		#ANALYSIS CODE
-		return True
-	def msgVariation(self):
-		#MSG VARIATION CODE
-		return True
 	def keysValidate(self):
 		#KEY VALIDATION
 		return True
@@ -286,9 +273,41 @@ class viginere(afine):
 	def noKeysDecrypt(self):
 		#NO KEY DECRYPTION CODE
 		return True
-	def searchMsg(self,arg):
-		#SEARCH THE self.msg FOR THE arg STRING
-		return True
+	def search(self,text,target,startInxex = 0):
+		#SEARCH THE text srting for a target strng, and does so from the starting index
+		# returns a list of the starting index of each hit
+		hitsIndexes = []
+		txtLen = len(text)
+		for indexA in range(startInxex,txtLen):
+			testTarget = ''
+			for indexB in range(0,len(target)):
+				testTarget += text[indexA + indexB] #DO A IF TO SEE IF A + B > txtLen if so target = none and then pass 
+			if target == testTarget:
+				hitsIndexes.append(indexA)
+		return hitsIndexes
+	def getRepetes(self,textSource,maxLen = 10,startInxexN = 0):
+		'''looks at a textN and returns a dictionary where the key is a hit for a repete string and the
+			key's value is a list of all the start unique start indexes of that repete string, the function
+			searches for repetes maxLen in length and starts searching the text at startIndexN
+		'''
+		repetes = {}
+		txtLen = len(textSource)
+		for indexA in range(startInxexN,txtLen):
+			testRepete = ''
+			testIndex = indexA + 1
+			for indexB in range(0,maxLen):
+				testRepete += textSource[indexA + indexB]
+			testList = self.search(textSource,testRepete, testIndex)
+			if testList != []:
+				for indexAItem in testList:
+					for indexBItem in repetes[testRepete]:
+						if indexAItem != indexBItem:
+							if repetes[testRepete] != []:
+								repetes[testRepete] = []
+								repetes[testRepete] += indexAItem
+							else:
+								repetes[testRepete] += indexAItem
+		return repetes
 class viginereOldMsg(viginere):
 	def __init__(self,keys,msg):
 		self.keys = []
