@@ -151,15 +151,6 @@ class afine(caesar,object):
 		self.cipherType = 'afine'
 		self.defMap = map('abcdefghijklmnopqrstuvwxyz')
 		return
-	def phi(self,num):
-		num = num - 1
-		return num
-	def isRelPrime(self,n,a):
-		#checks if two numbers are relativly prime
-		return True
-	def GCF(self,num, numA):
-		#Get the greatest common factor of the two numbers
-		return True
 	def getValidMultkeys(self,num):
 		# Should retrun all intigers relativly prime to num
 		validKeys = []
@@ -170,13 +161,6 @@ class afine(caesar,object):
 				else:
 					continue
 		return validKeys
-	def factor(self,n,facLst = []):
-		#should factor n and return a list of factors
-		
-		return True
-	def isValidMultKey(self,key,num):
-		#check if key is relativly prime to num return true or false
-		return True
 	def getInvrsMultKey(self,key):
 		# gets the inverse of the mult key , asumes 26 , watches for keys that do not have a reverse
 		inverseKey = None
@@ -264,11 +248,18 @@ class viginere(afine):
 				if counter == lenK:
 					counter = 0
 		return decrypted
-	def keysValidate(self):
-		#KEY VALIDATION
+	def keysValidate(self,key):
+		#KEY VALIDATION tests if the key will work based upon the defMap and format
+		if (key != str) | (self.defMap(key) == self.defMap.err):
+			return false
 		return True
-	def msgValidate(self):
+	def msgValidate(self, msg):
 		#MSG VALIDATION CODE
+		for letter in msg:
+			if self.defMap(letter) == self.defMap.err:
+				return False
+			else:
+				continue
 		return True
 	def noKeysDecrypt(self):
 		#NO KEY DECRYPTION CODE
@@ -278,10 +269,15 @@ class viginere(afine):
 		# returns a list of the starting index of each hit
 		hitsIndexes = []
 		txtLen = len(text)
+		if len(target)> len(text):
+			return []
 		for indexA in range(startInxex,txtLen):
 			testTarget = ''
 			for indexB in range(0,len(target)):
-				testTarget += text[indexA + indexB] #DO A IF TO SEE IF A + B > txtLen if so target = none and then pass 
+				if (indexA + indexB) > (txtLen-1):
+					pass
+				else:
+					testTarget += text[indexA + indexB]
 			if target == testTarget:
 				hitsIndexes.append(indexA)
 		return hitsIndexes
@@ -296,42 +292,64 @@ class viginere(afine):
 			testRepete = ''
 			testIndex = indexA + 1
 			for indexB in range(0,maxLen):
-				testRepete += textSource[indexA + indexB]
+				if (indexA + indexB)> (len(textSource)-1):
+					pass
+				else:
+					testRepete += textSource[indexA + indexB]
 			testList = self.search(textSource,testRepete, testIndex)
+			print(testList)
 			if testList != []:
 				for indexAItem in testList:
+					if testRepete not in repetes:
+						repetes[testRepete] = []
+						continue
+					else:
+						continue
 					for indexBItem in repetes[testRepete]:
 						if indexAItem != indexBItem:
-							if repetes[testRepete] != []:
-								repetes[testRepete] = []
-								repetes[testRepete] += indexAItem
-							else:
-								repetes[testRepete] += indexAItem
+							repetes[testRepete].append(indexAItem)
+						else:
+							continue
+			else:
+				continue
 		return repetes
-class viginereOldMsg(viginere):
-	def __init__(self,keys,msg):
-		self.keys = []
+class viginereOld(viginere):
+	def __init__(self):
 		self.cipherType = 'viginereold'
-		self.msg = msg
-	def encrypt(self):
+		self.defMap = map('abcdefghijklmnopqrstuvwxyz')
+	def encrypt(self,msg, keyWord):
 		#ENCRYPTION CODE
-		return True
-	def decrypt(self):
+		encrypted = ''
+		counter = 0
+		lenK = len(keyWord)
+		for letter in msg:
+			en = self.defMap(letter)
+			if en == self.defMap.err:
+				pass
+			else:
+				encrypted += str(self.numToChr((self.chrToNum(letter) + self.chrToNum(keyWord[counter])) % self.defMap.mod))
+				counter += 1
+				if counter == lenK:
+					keyWord = encrypted[(len(encrypted)-lenK): len(encrypted)]
+					counter = 0
+		return encrypted
+	def decrypt(self, msg, keyWord):
 		#DECRYPTION CODE
-		return True
-	def frequencyAnalysis(self):
-		#ANALYSIS CODE
-		return True
-	def msgVariation(self):
-		#MSG VARIATION CODE
-		return True
-	def keysValidate(self):
-		#KEY VALIDATION
-		return True
-	def msgValidate(self):
-		#MSG VALIDATION CODE
-		return True
+		decrypted = ''
+		counter = 0
+		lenK = len(keyWord)
+		for letter in msg:
+			de = self.defMap(letter)
+			if de == self.defMap.err:
+				pass
+			else:
+				decrypted += self.numToChr((self.chrToNum(letter) - self.chrToNum(keyWord[counter])) % 26)
+				counter += 1
+				if counter == lenK:
+					keyWord = msg[(len(decrypted)-lenK) : len(decrypted)]
+					counter = 0
+		return decrypted
 	def noKeysDecrypt(self):
-		#NO KEY DECRYPTION CODE
+		#NO KEY DECRYPTION CODE ???????????
 		return True
 		#INHERITS .searchMsg()
