@@ -22,7 +22,7 @@ class choice(object):
 	def __addChoice(self):
 		allChoices.append(self)
 		return
-	def getPreview(self):
+	def display(self):
 		#returns the string for consistant display
 		nameN = self.name
 		quickDesN = self.quickDes
@@ -91,12 +91,13 @@ class task(object):
 		print(nkd[0])
 		return
 def listActiveChoices(indexCoefficient = 0):
-	#PRINT OUT THE CHOICES WITH THEIR INDEX
+	#PRINT all choices and their display
 	print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 	print("Please type the number of the choice you wish to select")
 	global activeChoices
+	print("Choice     | Quick Description    |")
 	for indexAlpha in range(0,len(activeChoices)):
-		print( str(indexAlpha + indexCoefficient) + " " + str(activeChoices[indexAlpha].name) + " " + str(activeChoices[indexAlpha].quickDes))
+		print(indexAlpha.display())
 	print('No more choices')
 	return
 def askChoice(passValue = 'none'):
