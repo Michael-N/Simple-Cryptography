@@ -200,3 +200,11 @@ and the key used to do it in a list. Only works when the map instance is `map('a
 c = caesar()
 c.nokeysDecrypt('b') #>>> will return the most plausable decryption ['a',1]
 ```
+
+## Class `afine`
+#####Usage: `afine()`
+* Contains the encryption and decryption code for afine ciphers
+```python
+a  = afine()
+a.encrypt('abc',1,5) #>>> returns the result of an afine encryption for the text 'abc'
+```
