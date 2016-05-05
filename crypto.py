@@ -1,3 +1,4 @@
+allCiphers = []
 class cryptoErr(BaseException):
 	#This is the error class that will be raised if there is a problem
 	def __init__():
@@ -178,7 +179,9 @@ class afine(caesar,object):
 		else:
 			keyN = self.defMap.mod -key ######## THIS MAY CAUSE AN ERROR 
 			return keyN
-	def encrypt(self, msg,multKey,addKey):
+	def encrypt(self, msg,keys):
+		multKey = keys[0]
+		addkey = keys[1]
 		#ENCRYPTION CODE
 		encrypted = ''
 		for letter in msg:
@@ -353,3 +356,57 @@ class viginereOld(viginere):
 		#NO KEY DECRYPTION CODE ???????????
 		return True
 		#INHERITS .searchMsg()
+allCiphers.append(caesar())
+allCiphers.append(afine())
+allCiphers.append(viginere())
+allCiphers.append(viginereOld())
+def getCipherIndex(arg, err = -1):
+	global allCiphers
+	for index in range(allCiphers):
+		try:
+			if allCiphers[index].cipherType == arg:
+				return index
+			else:
+				continue
+		except:
+			continue
+	return err
+def encrypt(message,keys,cipherType,mapChoice = 'default',err = -1):
+	cipherIndex = getCipherIndex(cipherType,err):
+	global allCiphers
+	if cipher == err:
+		return err
+	else:
+		try:
+			if mapChoice != 'default':
+				allCiphers[cipherIndex].defMap = mapChoice
+			result = allCiphers[cipherIndex].encrypt(message,keys)
+		except:
+			return err
+		return result
+def decrypt(message,keys,cipherType,mapChoice = 'default',err = -1):
+	cipherIndex = getCipherIndex(cipherType,err):
+	global allCiphers
+	if cipher == err:
+		return err
+	else:
+		try:
+			if mapChoice != 'default':
+				allCiphers[cipherIndex].defMap = mapChoice
+			result = allCiphers[cipherIndex].decrypt(message,keys)
+		except:
+			return err
+		return result
+def noKeysDecrypt(message,cipherType,mapChoice = 'default',err = -1):
+	cipherIndex = getCipherIndex(cipherType,err):
+	global allCiphers
+	if cipher == err:
+		return err
+	else:
+		try:
+			if mapChoice != 'default':
+				allCiphers[cipherIndex].defMap = mapChoice
+			result = allCiphers[cipherIndex].noKeysDecrypt(message)
+		except:
+			return err
+		return result		
