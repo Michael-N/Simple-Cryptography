@@ -4,9 +4,9 @@ currentTask = None
 allChoices = []
 activeChoices = []
 currentChoice = None
-allCipher = []
-#import crypto.py as crypto
-allCipherMods[0] = crypto.caesar()
+allCipherMods = []
+import crypto
+allCipherMods.append(crypto.caesar())
 allCipherMods.append(crypto.afine())
 allCipherMods.append(crypto.viginere)
 allCipherMods.append(crypto.viginereOld)
@@ -51,18 +51,20 @@ class task(object):
 		keysN = self.keys
 		cipherTypeN = self.cipherType + ( " " * 12)
 		cipherTypeN = cipherTypeN[0:12]
-		if keysN == str:
+		if type(keysN) == str:
 			keysN = self.keys + (' ' * 16)
-		elif keysN == int:
+		elif type(keysN) == int:
 			keysN = str(self.keys) + (' ' * 16)
-		elif keysN == lst:
+			print(type(keysN))
+		elif type(keysN) == list:
 			keysN = 'Add:' + str(keysN[0]) + "," + 'Mult:' + str(keysN[1])
 		keysN = keysN[0:16]	
 		msgN = self.msg + (' ' * 15)
 		msgN = msgN[0:15]
 		return nameN + " | " + cipherTypeN + " | " + keysN + " | " + msgN + " | "
 	def __CTO(self):
-		for cipher in allCipher:
+		global allCipherMods
+		for cipher in allCipherMods:
 			if cipher.cipherType == self.cipherType:
 				return cipher
 			else:
@@ -177,8 +179,8 @@ def devMode():
 choice('Create Task', createTask,'Create a new Task', "This choice allows you to create a a new cryptography task that you can later access for your needs")
 choice('Edit Task', editTask, 'Edit a Task', 'This allows you to preview then edit previous tasks' )
 choice('Exit', exit, 'Exit', 'Exit to the main menu or exit the program')
-choice('Preview the current Task', previewTask, "Shows information about the most recent Task","Shows information about the most recent Task")
-choice('Show All Tasks',showAllTasks,'Look at previous tasks','Look at previous tasks')
+choice('Preview the current Task', previewAllTasks, "Shows information about the most recent Task","Shows information about the most recent Task")
+#choice('Show All Tasks',showAllTasks,'Look at previous tasks','Look at previous tasks')
 choice('Main Menue',start,'Retrun to the main menue',' Will return you to the main menue')
 choice('Dev',devMode,'---------',' For Debugging and devlopers, directly input code')
 start()# START THE INTERFACE THE FIRST TIME

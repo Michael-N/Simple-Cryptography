@@ -180,8 +180,8 @@ class afine(caesar,object):
 			keyN = self.defMap.mod -key ######## THIS MAY CAUSE AN ERROR 
 			return keyN
 	def encrypt(self, msg,keys):
-		multKey = keys[0]
-		addkey = keys[1]
+		multKey = keys[1]
+		addKey = keys[0]
 		#ENCRYPTION CODE
 		encrypted = ''
 		for letter in msg:
@@ -191,9 +191,11 @@ class afine(caesar,object):
 			else:
 				encrypted += str(self.numToChr(((self.chrToNum(letter) + addKey) * multKey) % self.defMap.mod))
 		return encrypted
-	def decrypt(self,msg,multKey,addKey):
+	def decrypt(self,msg,keys):
 		#DECRYPTION CODE
 		decrypted = ''
+		multKey = keys[1]
+		addKey = keys[0]
 		for letter in msg:
 			de = self.defMap(letter)
 			if de == self.defMap.err:
@@ -206,16 +208,18 @@ class afine(caesar,object):
 		lowestVariance = 1000
 		testMultKey = None
 		testAddKey = None
-		for indexA in getValidMultkeys(self.defMap.mod):
+		for indexA in self.getValidMultkeys(self.defMap.mod):
 			for indexB in range(0,self.defMap.mod):
-				testDecrypt = self.decrypt(msg, indexA,indexB)
-				testFrequency = frequencyAnalysis(testDecrypt)
-				testVariance = variance(testFrequency)
+				keyT = [int(indexB),int(indexA)]
+				testDecrypt = self.decrypt(msg, keyT)
+				testFrequency = self.frequencyAnalysis(testDecrypt)
+				testVariance = self.variance(testFrequency)
 				if testVariance < lowestVariance:
 					lowestVariance = testVariance
 					testMultKey = indexA
 					testAddKey = indexB
-		return [self.decrypt(msg,testMultKey,testAddKey),testMultKey,testAddKey]
+		keyF = [testAddKey,testMultKey]
+		return [self.decrypt(msg,keyF),[testMultKey,testAddKey]]
 class viginere(afine):
 	def __init__(self):
 		self.cipherType = 'viginere'
@@ -372,7 +376,7 @@ def getCipherIndex(arg, err = -1):
 			continue
 	return err
 def encrypt(message,keys,cipherType,mapChoice = 'default',err = -1):
-	cipherIndex = getCipherIndex(cipherType,err):
+	cipherIndex = getCipherIndex(cipherType,err)
 	global allCiphers
 	if cipher == err:
 		return err
@@ -385,7 +389,7 @@ def encrypt(message,keys,cipherType,mapChoice = 'default',err = -1):
 			return err
 		return result
 def decrypt(message,keys,cipherType,mapChoice = 'default',err = -1):
-	cipherIndex = getCipherIndex(cipherType,err):
+	cipherIndex = getCipherIndex(cipherType,err)
 	global allCiphers
 	if cipher == err:
 		return err
@@ -398,7 +402,7 @@ def decrypt(message,keys,cipherType,mapChoice = 'default',err = -1):
 			return err
 		return result
 def noKeysDecrypt(message,cipherType,mapChoice = 'default',err = -1):
-	cipherIndex = getCipherIndex(cipherType,err):
+	cipherIndex = getCipherIndex(cipherType,err)
 	global allCiphers
 	if cipher == err:
 		return err
