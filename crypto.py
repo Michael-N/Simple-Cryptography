@@ -376,6 +376,7 @@ class hills(afine):
 		return mA
 	def getInvrsMatrix(self,mA):
 	#[[a:00,c:01],[b:10,d:11]]
+	#[[],[]] ----> get from tst.t 
 		print(mA)
 		inMult = self.getInvrsMultKey((mA[0][0] * mA[1][1]) - (mA[1][0] * mA[0][1]))
 		print(mA)
