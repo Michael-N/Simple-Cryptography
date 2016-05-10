@@ -1,3 +1,4 @@
+import random
 allCiphers = []
 class cryptoErr(BaseException):
 	#This is the error class that will be raised if there is a problem
@@ -359,14 +360,77 @@ class viginereOld(viginere):
 	def noKeysDecrypt(self):
 		#NO KEY DECRYPTION CODE ???????????
 		return True
-		#INHERITS .searchMsg()
+class hills(afine):
+	def __init__(self):
+		self.cipherType = 'hills'
+		self.defMap = map('abcdefghijklmnopqrstuvwxyz')			
+	def multMatrix(self,mA,mB):
+		#must be a multidimensional array in the form of [[collum],[collum]] for a 2by2 * 1by2
+		result = [[]]
+		result[0].append((mA[0][0] * mB[0][0]) + (mA[1][0] * mB[0][1]))
+		result[0].append((mA[0][1] * mB[0][0]) + (mA[1][1] * mB[0][1]))
+		return result
+	def modMatrix(self, mA):
+		mA[0][0] = mA[0][0] % self.defMap.mod
+		mA[0][1] = mA[0][1] % self.defMap.mod
+		return mA
+	def getInvrsMatrix(self,mA):
+	#[[a:00,c:01],[b:10,d:11]]
+		print(mA)
+		inMult = self.getInvrsMultKey((mA[0][0] * mA[1][1]) - (mA[1][0] * mA[0][1]))
+		print(mA)
+		print(invrs)
+		invrsmA = mA
+		invrsmA[0][0] = (mA[1][1] * inMult) #% self.defMap.mod#A
+		invrsmA[0][1] = 0 - (mA[1][0] * inMult) #% add (   self.defMap.mod)#c
+		invrsmA[1][0] = 0 - (mA[0][1] * inMult) #% add   (  self.defMap.mod)#b
+		invrsmA[1][1] = (mA[0][0] * inMult) #% self.defMap.mod#D
+		print(mA[1][1])
+		print(mA[1][0])
+		print(mA[0][1])
+		print(mA[0][0])
+		return invrsmA
+	def chrsToMatrix(self,char):
+		if len(char) != 2:
+			return self.defMap.err
+		else:
+			matrix = [[0,0]]
+			matrix[0][0] = self.defMap(char[0])
+			matrix[0][1] = self.defMap(char[1])
+			return matrix
+		return self.defMap.err
+	def matrixToChrs(self,matrix):
+		try:
+			charA = self.defMap(matrix[0][0])
+			charB = self.defMap(matrix[0][1])
+			return charA + charB
+		except:
+			return self.defMap.err
+	def encrypt(self,msg,keys):
+		encrypted  = ''
+		if len(msg) % 2 != 0:
+			msg += self.defMap(int(random.random()*100)%self.defMap.mod)
+		skip = 0
+		for i in range(len(msg)):
+			encrypted += self.matrixToChrs(self.modMatrix(self.multMatrix(keys,self.chrsToMatrix(msg[i + skip] + msg[(i + 1) + skip]))))
+			skip += 1 
+		return encrypted
+	def decrypt(self,msg,keys):
+		decrypted  = ''
+		if len(msg) % 2 != 0:
+			msg += self.defMap(int(random.random()*100)%self.defMap.mod)
+		skip = 0
+		for i in range(len(msg)):
+			decrypted += self.matrixToChrs(self.modMatrix(self.multMatrix(getInvrsMatrix(keys),self.chrsToMatrix(msg[i + skip] + msg[(i + 1) + skip]))))
+			skip += 1 
+		return decrypted
 allCiphers.append(caesar())
 allCiphers.append(afine())
 allCiphers.append(viginere())
 allCiphers.append(viginereOld())
 def getCipherIndex(arg, err = -1):
 	global allCiphers
-	for index in range(allCiphers):
+	for index in range(0,len(allCiphers)):
 		try:
 			if allCiphers[index].cipherType == arg:
 				return index
