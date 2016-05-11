@@ -381,7 +381,7 @@ class hills(afine):
 		inMult = self.getInvrsMultKey((mA[0][0] * mA[1][1]) - (mA[1][0] * mA[0][1]))
 		print(mA)
 		print(invrs)
-		invrsmA = mA
+		invrsmA = [[0,0],[0,0]] ## THIS IS THE LINE THAT HAD THE WEIRD ERROR
 		invrsmA[0][0] = (mA[1][1] * inMult) #% self.defMap.mod#A
 		invrsmA[0][1] = 0 - (mA[1][0] * inMult) #% add (   self.defMap.mod)#c
 		invrsmA[1][0] = 0 - (mA[0][1] * inMult) #% add   (  self.defMap.mod)#b
