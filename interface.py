@@ -1,4 +1,3 @@
-#BUILD AN ERROR HANDELING SYSTEM>????
 allTasks = []
 currentTask = None
 allChoices = []
@@ -6,10 +5,15 @@ activeChoices = []
 currentChoice = None
 allCipherMods = []
 import crypto
-allCipherMods.append(crypto.caesar())
-allCipherMods.append(crypto.afine())
-allCipherMods.append(crypto.viginere)
-allCipherMods.append(crypto.viginereOld)
+def allMain():
+	global allCipherMods
+	allCipherMods.append(crypto.caesar())
+	allCipherMods.append(crypto.afine())
+	allCipherMods.append(crypto.viginere())
+	allCipherMods.append(crypto.viginereOld())
+	allCipherMods.append(crypto.hills())
+	return True
+allMain()
 class choice(object):
 	#CREATE A CHOICE AND MAKE IT AVILIABLE
 	def __init__(self,name,callback,quickDes,description):
@@ -34,8 +38,7 @@ class choice(object):
 			self.callback()
 		else:
 			self.callback(arg)
-		return		
-	
+		return True
 class task(object):
 	def __init__(self,cipherType,msg,keys,name):
 		self.cipherType = cipherType
@@ -84,13 +87,16 @@ class task(object):
 		print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 		print('Auto Decrypted:')
 		nkd = self.__CTO().noKeysDecrypt(self.msg)
-		if self.cipherType == 'afine':
-			print('Add Key: ' + str(nkd[1][0]))
-			print('Mult. Key: ' + str(nkd[1][1]))
+		if nkd != False:
+			if self.cipherType == 'afine':
+				print('Add Key: ' + str(nkd[1][0]))
+				print('Mult. Key: ' + str(nkd[1][1]))
+			else:
+				print('Key: ' + str(nkd[1]))
+			print('Text:')
+			print(nkd[0])
 		else:
-			print('Key: ' + str(nkd[1]))
-		print('Text:')
-		print(nkd[0])
+			print(nkd.ciphertype + " Does not support No Key Decryption")
 		return
 def listActiveChoices(indexCoefficient = 0):
 	#PRINT all choices and their display
@@ -125,7 +131,7 @@ def deleteTask():
 	#etc ask what t do next with showActiveChoices() and askChoice()
 	
 	return True
-def previewAllTasks():
+def previewAllTasks(indexCoefficient = 0):
 	print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 	print('All Tasks')
 	print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
@@ -133,15 +139,17 @@ def previewAllTasks():
 	if allTasks == []:
 		print('There are no Tasks, go and make one')
 	else:
-		print('Name    | Cipher Type  | Key\s           | Message        ')
-		print('----------------------------------------------------------')
-		for taskn in range(0,len(allTasks)):
-			print(taskn.getPreview())
+		print('Index | Name    | Cipher Type  | Key\s           | Message        ')#8
+		print('-----------------------------------------------------------')
+		for taskIndex in range(0,len(allTasks)):
+			printIndex = str(taskIndex + indexCoefficient)[0:5]
+			print(printIndex + ' | ' + allTasks[taskIndex].getPreview())
+		print('-----------------------------------------------------------')
 		print('No more Tasks')
 	#LOOKS AT THE CURRENT TASKS LIST AND DISPLAYS THEM WATCHES FOR EMPTY LIST
 	#then ask what t do next with showActiveChoices() and askChoice()
 	#CREATE A CHOICE THAT TAKES USER INPUT AND SETS GLOBAL TASK TO CURRENT TASK ONLY DO THIS UNLESS altasks != []
-	return
+	return True
 def validateString(arg):
 	#general validation for strings/user input
 	return True
