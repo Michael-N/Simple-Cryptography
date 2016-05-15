@@ -1,4 +1,4 @@
-#BUILD AN ERROR HANDELING SYSTEM
+#BUILD AN ERROR HANDELING SYSTEM>????
 allTasks = []
 currentTask = None
 allChoices = []
@@ -176,11 +176,13 @@ def setActiveChoices(arg):
 def devMode():
 	# TAKES DIRECT INPUT FROM USER NO VALIDATION!!!! FOR DEBUGGING
 	return True
-choice('Create Task', createTask,'Create a new Task', "This choice allows you to create a a new cryptography task that you can later access for your needs")
-choice('Edit Task', editTask, 'Edit a Task', 'This allows you to preview then edit previous tasks' )
-choice('Exit', exit, 'Exit', 'Exit to the main menu or exit the program')
-choice('Preview the current Task', previewAllTasks, "Shows information about the most recent Task","Shows information about the most recent Task")
-#choice('Show All Tasks',showAllTasks,'Look at previous tasks','Look at previous tasks')
-choice('Main Menue',start,'Retrun to the main menue',' Will return you to the main menue')
-choice('Dev',devMode,'---------',' For Debugging and devlopers, directly input code')
+def MainInitT():
+	choice('Create Task', createTask,'Create a new Task', "This choice allows you to create a a new cryptography task that you can later access for your needs")
+	choice('Edit Task', editTask, 'Edit a Task', 'This allows you to preview then edit previous tasks' )
+	choice('Exit', exit, 'Exit', 'Exit to the main menu or exit the program')
+	choice('Preview the current Task', previewAllTasks, "Shows information about the most recent Task","Shows information about the most recent Task")
+	#choice('Show All Tasks',showAllTasks,'Look at previous tasks','Look at previous tasks')
+	choice('Main Menue',start,'Retrun to the main menue',' Will return you to the main menue')
+	choice('Dev',devMode,'---------',' For Debugging and devlopers, directly input code')
 start()# START THE INTERFACE THE FIRST TIME
+MainInitT() 

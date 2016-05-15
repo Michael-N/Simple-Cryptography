@@ -270,8 +270,8 @@ class viginere(afine):
 				continue
 		return True
 	def noKeysDecrypt(self):
-		#NO KEY DECRYPTION CODE
-		return True
+		#NO   NO-KEY DECRYPTION CODE exists for the scope of this module
+		return False
 	def search(self,text,target,startInxex = 0):
 		#SEARCH THE text srting for a target strng, and does so from the starting index
 		# returns a list of the starting index of each hit
@@ -357,39 +357,32 @@ class viginereOld(viginere):
 					keyWord = msg[(len(decrypted)-lenK) : len(decrypted)]
 					counter = 0
 		return decrypted
-	def noKeysDecrypt(self):
-		#NO KEY DECRYPTION CODE ???????????
-		return True
 class hills(afine):
 	def __init__(self):
 		self.cipherType = 'hills'
 		self.defMap = map('abcdefghijklmnopqrstuvwxyz')			
 	def multMatrix(self,mA,mB):
+		#[[a:00,c:01],[b:10,d:11]] [[x:00,y:01]]
 		#must be a multidimensional array in the form of [[collum],[collum]] for a 2by2 * 1by2
 		result = [[]]
 		result[0].append((mA[0][0] * mB[0][0]) + (mA[1][0] * mB[0][1]))
 		result[0].append((mA[0][1] * mB[0][0]) + (mA[1][1] * mB[0][1]))
+		#result[0].append((mA[0][0] * mB[0][0]) + (mA[1][0] * mB[0][1]))
+		#result[0].append((mA[0][1] * mB[0][0]) + (mA[1][1] * mB[0][1]))
 		return result
 	def modMatrix(self, mA):
 		mA[0][0] = mA[0][0] % self.defMap.mod
 		mA[0][1] = mA[0][1] % self.defMap.mod
 		return mA
-	def getInvrsMatrix(self,mA):
+	def getInvrsMatrix(self, mA):
 	#[[a:00,c:01],[b:10,d:11]]
 	#[[],[]] ----> get from tst.t 
-		print(mA)
 		inMult = self.getInvrsMultKey((mA[0][0] * mA[1][1]) - (mA[1][0] * mA[0][1]))
-		print(mA)
-		print(invrs)
 		invrsmA = [[0,0],[0,0]] ## THIS IS THE LINE THAT HAD THE WEIRD ERROR
-		invrsmA[0][0] = (mA[1][1] * inMult) #% self.defMap.mod#A
-		invrsmA[0][1] = 0 - (mA[1][0] * inMult) #% add (   self.defMap.mod)#c
-		invrsmA[1][0] = 0 - (mA[0][1] * inMult) #% add   (  self.defMap.mod)#b
-		invrsmA[1][1] = (mA[0][0] * inMult) #% self.defMap.mod#D
-		print(mA[1][1])
-		print(mA[1][0])
-		print(mA[0][1])
-		print(mA[0][0])
+		invrsmA[0][0] = (mA[1][1] * inMult) % self.defMap.mod #A
+		invrsmA[0][1] = (0 - (mA[0][1] * inMult)) % self.defMap.mod#c
+		invrsmA[1][0] = (0 - (mA[1][0] * inMult)) % self.defMap.mod #b
+		invrsmA[1][1] = (mA[0][0] * inMult) % self.defMap.mod #D
 		return invrsmA
 	def chrsToMatrix(self,char):
 		if len(char) != 2:
@@ -411,24 +404,30 @@ class hills(afine):
 		encrypted  = ''
 		if len(msg) % 2 != 0:
 			msg += self.defMap(int(random.random()*100)%self.defMap.mod)
-		skip = 0
 		for i in range(len(msg)):
-			encrypted += self.matrixToChrs(self.modMatrix(self.multMatrix(keys,self.chrsToMatrix(msg[i + skip] + msg[(i + 1) + skip]))))
-			skip += 1 
+			if i % 2 != 0:
+				pass
+			else:
+				encrypted += self.matrixToChrs(self.modMatrix(self.multMatrix(keys,self.chrsToMatrix(msg[i] + msg[i + 1]))))
 		return encrypted
 	def decrypt(self,msg,keys):
 		decrypted  = ''
 		if len(msg) % 2 != 0:
 			msg += self.defMap(int(random.random()*100)%self.defMap.mod)
-		skip = 0
 		for i in range(len(msg)):
-			decrypted += self.matrixToChrs(self.modMatrix(self.multMatrix(getInvrsMatrix(keys),self.chrsToMatrix(msg[i + skip] + msg[(i + 1) + skip]))))
-			skip += 1 
+			if i % 2 != 0:
+				pass
+			else:
+				decrypted += self.matrixToChrs(self.modMatrix(self.multMatrix(self.getInvrsMatrix(keys),self.chrsToMatrix(msg[i] + msg[i + 1]))))
 		return decrypted
-allCiphers.append(caesar())
-allCiphers.append(afine())
-allCiphers.append(viginere())
-allCiphers.append(viginereOld())
+	def noKeysDecrypt(self):
+		#NO   NO-KEY DECRYPTION CODE exists for the scope of this module
+		return False
+def Main():
+	allCiphers.append(caesar())
+	allCiphers.append(afine())
+	allCiphers.append(viginere())
+	allCiphers.append(viginereOld())
 def getCipherIndex(arg, err = -1):
 	global allCiphers
 	for index in range(0,len(allCiphers)):
@@ -476,6 +475,9 @@ def noKeysDecrypt(message,cipherType,mapChoice = 'default',err = -1):
 			if mapChoice != 'default':
 				allCiphers[cipherIndex].defMap = mapChoice
 			result = allCiphers[cipherIndex].noKeysDecrypt(message)
+			if result = False:
+				raise CryptoErr()
 		except:
 			return err
 		return result		
+Main()
