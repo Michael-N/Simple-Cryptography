@@ -1,3 +1,4 @@
+'''
 allTasks = []
 currentTask = None
 allChoices = []
@@ -275,3 +276,65 @@ def listPreviewAllTasks(indexCoefficient = 0):
 	#then ask what t do next with showActiveChoices() and askChoice()
 	#CREATE A CHOICE THAT TAKES USER INPUT AND SETS GLOBAL TASK TO CURRENT TASK ONLY DO THIS UNLESS altasks != []
 	return True
+'''
+import crypto
+import os
+def SimpleCryptography():
+	print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+	print('Simple Cryptography')
+	print('By michael Naguib')
+	print('Avilable at   https://github.com/Michael-N/Simple-Cryptography ')
+	print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+	#def tools():?????
+	def mainSequence():
+		while True:
+			try:
+				print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+				print('Avilable cipher Types: caesar afine viginereOld viginere hills')
+				cphr = str(input('Please type in your cipher type: '))
+				mssg = str(input('Please type in your message(no spaces): '))
+				
+				if cphr == 'caesar':
+					kys = int(input('Type in your key as a number: '))
+				elif cphr == 'afine':
+					kys = [0,0]
+					kys[0] = int(input('Type In your add. Key: '))
+					kys[1] = int(input('Type in your mult. Key: '))
+				elif cphr == 'hills':
+					kys = [[0,0],[0,0]]
+					print( 'matrix    a  b')
+					print('           c  d')
+					kys[0][0] = int(input("Please type the a matrix key to be given to this task: "))
+					kys[1][0] = int(input("Please type the b matrix key to be given to this task: "))
+					kys[0][1] = int(input("Please type the c matrix key to be given to this task: "))
+					kys[1][1] = int(input("Please type the d matrix key to be given to this task: "))
+				elif (cphr == 'viginere') | (cphr == 'viginereOld'):
+					kys = str(input('Enter your KeyWord: '))
+				den = str(input('Type\nd to decrypt,\ne to encrypt, or\nn for no key decryption if available: '))
+			except: 
+				print('You made an incorrect input')
+			try:
+				print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+				if den == 'd':
+					print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+					print('Decrypted Message')
+					print(str(crypto.decrypt(mssg,kys,cphr)))
+					print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+				elif den == 'e':
+					print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+					print('Encrypted Message')
+					print(str(crypto.encrypt(mssg,kys,cphr)))
+					print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+				elif den == 'n':
+					print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+					print('Auto decrypted Message')
+					print(str(crypto.noKeysDecrypt(mssg,cphr)))
+					print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+			except: 
+				print('The program encountered an error')
+			exitn = str(input('Would you like to exit (y/n): ')).lower()
+			if exitn == 'y':
+				break
+	mainSequence()
+SimpleCryptography()
+			

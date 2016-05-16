@@ -145,7 +145,7 @@ class caesar(object):
 		for index in range(0,self.defMap.mod):
 			testDecrypt = self.decrypt(msg,key)
 			testFrequency = self.frequencyAnalysis(testDecrypt)
-			testVariance = variance(testFrequency)
+			testVariance = self.variance(testFrequency)
 			if testVariance < lowestVariance:
 				lowestVariance = testVariance
 				testKey = key
@@ -215,7 +215,7 @@ class afine(caesar,object):
 		lowestVariance = 1000
 		testMultKey = None
 		testAddKey = None
-		for indexA in self.getValidMultkeys(self.defMap.mod):
+		for indexA in self.getValidMultKeys(self.defMap.mod):
 			for indexB in range(0,self.defMap.mod):
 				keyT = [int(indexB),int(indexA)]
 				testDecrypt = self.decrypt(msg, keyT)
@@ -332,7 +332,7 @@ class viginere(afine):
 		return repetes
 class viginereOld(viginere):
 	def __init__(self):
-		self.cipherType = 'viginereold'
+		self.cipherType = 'viginereOld'
 		self.defMap = map('abcdefghijklmnopqrstuvwxyz')
 	def encrypt(self,msg, keyWord):
 		#ENCRYPTION CODE
@@ -441,8 +441,9 @@ class hills(afine):
 def Main():
 	allCiphers.append(caesar())
 	allCiphers.append(afine())
-	allCiphers.append(viginere())
 	allCiphers.append(viginereOld())
+	allCiphers.append(viginere())
+	allCiphers.append(hills())
 def getCipherIndex(arg, err = -1):
 	global allCiphers
 	for index in range(0,len(allCiphers)):
@@ -457,7 +458,7 @@ def getCipherIndex(arg, err = -1):
 def encrypt(message,keys,cipherType,mapChoice = 'default',err = -1):
 	cipherIndex = getCipherIndex(cipherType,err)
 	global allCiphers
-	if cipher == err:
+	if cipherIndex == err:
 		return err
 	else:
 		try:
@@ -470,7 +471,7 @@ def encrypt(message,keys,cipherType,mapChoice = 'default',err = -1):
 def decrypt(message,keys,cipherType,mapChoice = 'default',err = -1):
 	cipherIndex = getCipherIndex(cipherType,err)
 	global allCiphers
-	if cipher == err:
+	if cipherIndex == err:
 		return err
 	else:
 		try:
@@ -483,7 +484,7 @@ def decrypt(message,keys,cipherType,mapChoice = 'default',err = -1):
 def noKeysDecrypt(message,cipherType,mapChoice = 'default',err = -1):
 	cipherIndex = getCipherIndex(cipherType,err)
 	global allCiphers
-	if cipher == err:
+	if cipherIndex == err:
 		return err
 	else:
 		try:
