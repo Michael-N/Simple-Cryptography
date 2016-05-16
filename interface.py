@@ -33,12 +33,14 @@ class choice(object):
 		nameN += " " * 10 #MINIMUM 10
 		quickDesN += ' ' * 20 #MINIMUM 20
 		return nameN[0:10] + " | " + quickDesN[0:20] + " | "
-	def activate(arg = None):
+	def activate(self,arg = None):
 		if arg == None:
 			self.callback()
 		else:
 			self.callback(arg)
 		return True
+	def displayHelp(self):
+		print(self.description)
 class task(object):
 	def __init__(self,cipherType,msg,keys,name):
 		self.cipherType = cipherType
@@ -122,7 +124,6 @@ def exit():
 	#ASk the user if they want to exit to the main menue or exit the program
 	#SHOULD EXIT AND GO TO THE MAIN MENU/ the start()
 	return True
-def createTask():
 	#CREATE TASK ask the questions etc ask what t do next with showActiveChoices() and askChoice()
 	#auto asign as the current task but append it first to allTasks
 	return True
@@ -131,25 +132,7 @@ def deleteTask():
 	#etc ask what t do next with showActiveChoices() and askChoice()
 	
 	return True
-def previewAllTasks(indexCoefficient = 0):
-	print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-	print('All Tasks')
-	print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-	global allTasks
-	if allTasks == []:
-		print('There are no Tasks, go and make one')
-	else:
-		print('Index | Name    | Cipher Type  | Key\s           | Message        ')#8
-		print('-----------------------------------------------------------')
-		for taskIndex in range(0,len(allTasks)):
-			printIndex = str(taskIndex + indexCoefficient)[0:5]
-			print(printIndex + ' | ' + allTasks[taskIndex].getPreview())
-		print('-----------------------------------------------------------')
-		print('No more Tasks')
-	#LOOKS AT THE CURRENT TASKS LIST AND DISPLAYS THEM WATCHES FOR EMPTY LIST
-	#then ask what t do next with showActiveChoices() and askChoice()
-	#CREATE A CHOICE THAT TAKES USER INPUT AND SETS GLOBAL TASK TO CURRENT TASK ONLY DO THIS UNLESS altasks != []
-	return True
+
 def validateString(arg):
 	#general validation for strings/user input
 	return True
@@ -158,11 +141,10 @@ def validateInt(arg):
 	return True
 def editTask():
 	#should look to current task preview it then ask the user what they want to overide
-	return True
-def createTaskDisplay():
-	#looks at the cipherName of the currentTask and asigns a standardized way to display it
-	#give the option to tell it to graph the frequency Visually----->SEE graphFrequency!!!!!!!!!!!
-	#SHOULD GIVE THE CURRENT TASK A .display() method-- that does this---> checks if already present
+	if currentTask == None:
+		print('No task was selected')
+	else:
+		print('')
 	return True
 def displayTask():
 	#should call the .display() on the currentTask and then showActiveChoices etc....
@@ -193,4 +175,103 @@ def MainInitT():
 	choice('Main Menue',start,'Retrun to the main menue',' Will return you to the main menue')
 	choice('Dev',devMode,'---------',' For Debugging and devlopers, directly input code')
 start()# START THE INTERFACE THE FIRST TIME
-MainInitT() 
+MainInitT()
+##########################
+def createTask():
+	print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+	while True:
+		print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+		namew = str(input("Please type the name to be given to this task: "))
+		test = str(input('You have typed ' + namew + ' is this the name you want to give the task (y/n)')).lower()
+		print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+		if test == 'y':
+			break
+	while True:
+		print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+		print('Avilable cipher types: caesar afine viginere viginereOld hills')
+		cipherTypew = str(input("Please type the Cipher Type to be given to this task (type exactly as shown): "))
+		test = str(input('You have typed ' + cipherTypew + ' is this correct (y/n)'))
+		print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+		if test == 'y':
+			break
+	while True:
+		print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+		print('Map allows you to define what characters are avilable for encryption: is letter,case, and order specific')
+		print('Leave blank for the default setting (a-z)')
+		mapn = str(input("Please type the encryption letter map to be given to this task: "))
+		test = str(input('You have typed ' + mapn + ' is this correct (y/n)'))
+		print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+		if test == 'y':
+			break
+	while True:
+		print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+		if cipherType == 'afine':
+			keysw = [0,0]
+			keysw[0] = str(input("Please type the Addative Key to be given to this task: "))
+			keysw[1] = str(input("Please type the Multiplicative Key to be given to this task: "))
+			test = str(input('You have typed ' + str(keysw) + ' is this correct(y/n)'))
+		elif cipherType == 'hills':
+			keysw = [[0,0],[0,0]]
+			print( 'matrix    a  b')
+			print('           c  d')
+			keysw[0][0] = int(input("Please type the a matrix key to be given to this task: "))
+			keysw[1][0] = int(input("Please type the b matrix key to be given to this task: "))
+			keysw[0][1] = int(input("Please type the c matrix key to be given to this task: "))
+			keysw[1][1] = int(input("Please type the d matrix key to be given to this task: "))
+			test = str(input('You have typed ' + str(keysw) + ' is this correct(y/n)'))
+		else:
+			keysw = str(input("Please type the Key to be given to this task: "))
+			test = str(input('You have typed ' + keysw + ' is this correct(y/n)'))
+		print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+		if test == 'y':
+			if cipherType == 'caesar':
+				keys = int(keys)
+			elif cipherType == 'afine'
+				keys[0] = int(keys[0])
+				keys[1] = int(keys[1])
+			break
+	while True:
+		print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+		msgw = str(input("Please type the Message to be given to this task: "))
+		test = str(input('You have typed ' + msgw + ' is this the name you want to give the task (y/n)'))
+		print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+		if test == 'y':
+			break
+	try:
+		global allTasks
+		myTask = task(cipherTypew,msgw,keysw,namew)
+		if mapn != None:
+			task.useMap = crypto.map(mapn)
+		allTasks.append(myTask)
+	return True
+def selectFromAllTasks(indexCoefficient = 0):
+	global currentTask
+	global allTasks
+	print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+	while True:
+		usrInput = input('Type the Index of the task you wish to select then hit enter: ')
+		print(str(allTasks[int(usrInput) - indexCoefficient].name) + ' Was selected')
+		usrInputT = input('Is this the correct task (y/n): ').lower()
+		if usrInputT == 'y':
+			currentTask = int(usrInput) - indexCoefficient
+			print('You have sucessfully selected the task')
+			break
+def listPreviewAllTasks(indexCoefficient = 0):
+	print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+	print('All Tasks')
+	print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+	global allTasks
+	if allTasks == []:
+		print('There are no Tasks, go and make one')
+	else:
+		print('Index | Name    | Cipher Type  | Key\s           | Message        ')#8
+		print('-----------------------------------------------------------')
+		for taskIndex in range(0,len(allTasks)):
+			printIndex = str(taskIndex + indexCoefficient)[0:5]
+			print(printIndex + ' | ' + allTasks[taskIndex].getPreview())
+		print('-----------------------------------------------------------')
+		print('No more Tasks')
+	#LOOKS AT THE CURRENT TASKS LIST AND DISPLAYS THEM WATCHES FOR EMPTY LIST
+	#then ask what t do next with showActiveChoices() and askChoice()
+	#CREATE A CHOICE THAT TAKES USER INPUT AND SETS GLOBAL TASK TO CURRENT TASK ONLY DO THIS UNLESS altasks != []
+	return True

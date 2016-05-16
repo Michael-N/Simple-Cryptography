@@ -53,6 +53,9 @@ class caesar(object):
 		self.defMap = map('abcdefghijklmnopqrstuvwxyz')
 		self.enVariance = [0.0867,0.01492,0.02782,0.04253,0.12702,0.02228,0.02015,0.06094,0.06966,0.00153,0.00772,0.04025,0.02406,0.06749,0.07507,0.01929,0.00095,0.05987,0.06327,0.09056,0.02758,0.00978,0.02361,0.00150,0.01974,0.00074]
 		return
+	def help(self):
+		print('encrypt/decrypt  msg,key   nokeydecrypt msg')
+		return True
 	def opp(t):
 		if t == True:
 			return False
@@ -153,7 +156,10 @@ class afine(caesar,object):
 		self.cipherType = 'afine'
 		self.defMap = map('abcdefghijklmnopqrstuvwxyz')
 		return
-	def getValidMultkeys(self,num):
+	def help(self):
+		print('encrypt/decrypt  msg,key as a list [add,mult]   nokeydecrypt msg')
+		return True
+	def getValidMultKeys(self,num):
 		# Should retrun all intigers relativly prime to num
 		validKeys = []
 		for indexA in range(0,num):
@@ -226,6 +232,9 @@ class viginere(afine):
 		self.cipherType = 'viginere'
 		self.defMap = map('abcdefghijklmnopqrstuvwxyz')
 		return
+	def help(self):
+		print('encrypt/decrypt  msg,keyword   nokeydecrypt is not avilable')
+		return True
 	def encrypt(self,msg, keyWord):
 		#ENCRYPTION CODE
 		encrypted = ''
@@ -341,6 +350,9 @@ class viginereOld(viginere):
 					keyWord = encrypted[(len(encrypted)-lenK): len(encrypted)]
 					counter = 0
 		return encrypted
+	def help(self):
+		print('encrypt/decrypt  msg,keyword   nokeydecrypt not avilable')
+		return True
 	def decrypt(self, msg, keyWord):
 		#DECRYPTION CODE
 		decrypted = ''
@@ -360,7 +372,10 @@ class viginereOld(viginere):
 class hills(afine):
 	def __init__(self):
 		self.cipherType = 'hills'
-		self.defMap = map('abcdefghijklmnopqrstuvwxyz')			
+		self.defMap = map('abcdefghijklmnopqrstuvwxyz')	
+	def help(self):
+		print('encrypt/decrypt  msg,key as [[a,c],[b,d]]  nokeydecrypt not avilable')
+		return True		
 	def multMatrix(self,mA,mB):
 		#[[a:00,c:01],[b:10,d:11]] [[x:00,y:01]]
 		#must be a multidimensional array in the form of [[collum],[collum]] for a 2by2 * 1by2
@@ -475,7 +490,7 @@ def noKeysDecrypt(message,cipherType,mapChoice = 'default',err = -1):
 			if mapChoice != 'default':
 				allCiphers[cipherIndex].defMap = mapChoice
 			result = allCiphers[cipherIndex].noKeysDecrypt(message)
-			if result = False:
+			if result == False:
 				raise CryptoErr()
 		except:
 			return err
