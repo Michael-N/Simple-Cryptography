@@ -10,6 +10,7 @@
 * [Class afine](#afine)
 * [Class viginere](#viginere)
 * [Class viginereOld](#viginereOld)
+* [Class hills](#hills)
 * [Class cryptoErr](#cryptoErr)
 
 ###File Interface.py
@@ -203,6 +204,9 @@ c.nokeysDecrypt('b') #>>> will return the most plausable decryption ['a',1]
 
 ## Class `afine`
 #####Usage: `afine()`
+*FOR ALL of crypto's encryption classes (caesar - hills) .encrypt(messageg,keys) and .decrypt(message,keys) 
+* for afine the key is a list of the addative key being the first item
+* for hills it takes a list of lists in the format of a standard matrix [[a,c],[b,d]]
 * Contains the encryption and decryption code for afine ciphers
 ```python
 a  = afine()
