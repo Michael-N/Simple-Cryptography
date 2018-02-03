@@ -165,7 +165,7 @@ c = caesar()
 c.az('a') #>>> True
 c.az('A') #>>> False
 ```
-#####Method: `sanitizeMsg(string,string)`
+##### Method: `sanitizeMsg(string,string)`
 
 * The first argument is the message and the second is the
 characters that will be removed from the message.
