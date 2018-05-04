@@ -138,7 +138,7 @@ definition of a Caesar Cipher.
 c = caesar()
 c.decrypt('bcd',1) #>>> 'abc'
 ```
-#####Method: `opp(bool)`
+##### Method: `opp(bool)`
 
 * Reverses the bolean value.
 ```python
